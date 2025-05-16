@@ -28,9 +28,18 @@
         <div class="container mx-auto px-4 flex justify-between items-center">
             <a href="{{ url('/') }}" class="text-xl font-bold text-orange-600">Limmie Food Blog</a>
             <ul class="flex space-x-6">
-                <li><a href="{{ url('/') }}" class="hover:text-orange-600">Blog</a></li>
-                <li><a href="{{ url('/recipes') }}" class="hover:text-orange-600">Recipes</a></li>
-                <li><a href="#" class="hover:text-orange-600">About</a></li>
+                <li>
+                    <a href="{{ url('/blog') }}" class="hover:text-orange-600 {{ request()->is('blog*') ? 'text-orange-600 font-semibold' : '' }}">Blog</a>
+                </li>
+                <li>
+                    <a href="{{ url('/recipes') }}" 
+                        class="hover:text-orange-600 {{ request()->is('recipes*') ? 'text-orange-600 font-semibold' : '' }}">
+                        Recipes
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url('/about') }}" class="hover:text-orange-600 {{ request()->is('about*') ? 'text-orange-600 font-semibold' : '' }}">About</a>
+                </li>
                 {{-- Login In / Log Out --}}
                 @guest
                     <li><a href="#" class="hover:text-orange-600">Login</a></li>
@@ -54,7 +63,7 @@
     <!-- Footer -->
     <footer class="bg-white border-t py-6 mt-auto">
         <div class="container mx-auto px-4 text-center text-gray-600 text-sm">
-            &copy; {{ date('Y') }} MyLaravelApp. All rights reserved.
+            &copy; {{ date('Y') }} Limmie Food Blog. All rights reserved.
         </div>
     </footer>
 
