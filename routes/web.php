@@ -16,5 +16,11 @@ Route::get('/', [RecipeController::class, 'index'])->name('home');
 
 // Recipe Routes
 Route::get('/recipes', [RecipeController::class, 'index'])->name('recipes.index');
+// Recipe Creation Routes
+Route::get('/recipes/create', [RecipeController::class, 'create'])->name('recipes.create');
+Route::post('/recipes', [RecipeController::class, 'store'])->name('recipes.store');
+// Recipe Details Route
 Route::get('/recipes/{id}', [RecipeController::class, 'show'])->name('recipes.show');
+
+// Route::post('/recipes', [RecipeController::class, 'store'])->name('recipes.store');
 

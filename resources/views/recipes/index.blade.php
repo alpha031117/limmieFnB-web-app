@@ -7,7 +7,7 @@
         <div>
           <p class="text-gray-600">Browse our collection of delicious recipes from around the world.</p>
         </div>
-        <a href="{{ route('recipes.index') }}">
+        <a href="{{ route('recipes.create') }}">
           <button type="submit" class="bg-orange-600 text-white py-2 px-4 rounded hover:bg-orange-700 transition cursor-pointer">
             Add Recipe
           </button>
