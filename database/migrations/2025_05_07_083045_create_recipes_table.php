@@ -19,6 +19,12 @@ return new class extends Migration
             $table->integer('duration');  // Duration in minutes
             $table->decimal('rating', 3, 2);
             $table->string('category');
+            $table->integer('prep_time');
+            $table->integer('cook_time');
+            $table->text('instruction');
+            $table->text('ingredients');
+            $table->text('nutrition');
+            $table->integer('servings');
             $table->string('chef_name');
             $table->string('image_url');
             $table->timestamps();

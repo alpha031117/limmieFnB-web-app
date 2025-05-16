@@ -13,53 +13,22 @@ class RecipeSeeder extends Seeder
     public function run(): void
     {
         Recipe::factory()->create([
-            'name' => 'Recipe 1',
-            'description' => 'Description for recipe 1',
+           'name' => 'Creamy Garlic Parmesan Pasta',
+            'description' => 'A rich and creamy pasta dish with garlic and parmesan cheese that’s perfect for a quick weeknight dinner or special occasion.',
             'difficulty' => 'Easy',
             'duration' => 30,
-            'rating' => 4.5,
-            'category' => 'Dessert',
-            'chef_name' => 'Chef A'
-        ]);
-
-        Recipe::factory()->create([
-            'name' => 'Recipe 2',
-            'description' => 'Description for recipe 2',
-            'difficulty' => 'Medium',
-            'duration' => 45,
-            'rating' => 4.0,
-            'category' => 'Main Course',
-            'chef_name' => 'Chef B'
-        ]);
-
-        Recipe::factory()->create([
-            'name' => 'Recipe 3',
-            'description' => 'Description for recipe 3',
-            'difficulty' => 'Hard',
-            'duration' => 60,
-            'rating' => 5.0,
-            'category' => 'Appetizer',
-            'chef_name' => 'Chef C'
-        ]);
-
-        Recipe::factory()->create([
-            'name' => 'Recipe 4',
-            'description' => 'Description for recipe 4',
-            'difficulty' => 'Easy',
-            'duration' => 20,
-            'rating' => 3.5,
-            'category' => 'Snack',
-            'chef_name' => 'Chef D'
-        ]);
-
-        Recipe::factory()->create([
-            'name' => 'Recipe 5',
-            'description' => 'Description for recipe 5',
-            'difficulty' => 'Medium',
-            'duration' => 50,
-            'rating' => 4.2,
-            'category' => 'Beverage',
-            'chef_name' => 'Chef E'
+            'rating' => 4.80,
+            'category' => 'Italian',
+            'prep_time' => 10,
+            'cook_time' => 20,
+            'instruction' => '1. Bring salted water to boil. Cook fettuccine al dente. Reserve pasta water. 2. Melt butter, sauté garlic 1-2 mins. 3. Add heavy cream, simmer 3-4 mins. 4. Whisk in Parmesan, season. 5. Toss pasta with sauce, add reserved water if needed. 6. Garnish and serve.',
+            'ingredients' => 'Fettuccine pasta, Butter, Garlic, Heavy cream, Parmesan cheese, Salt, Pepper, Parsley, Red pepper flakes',
+            'nutrition' => '550 calories, 30g fat, 40g carbohydrates, 15g protein',
+            'servings' => '4',
+            'chef_name' => 'Maria',
+            'image_url' => 'recipes/creamy_garlic_parmesan_pasta.jpg',
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
     }
 }

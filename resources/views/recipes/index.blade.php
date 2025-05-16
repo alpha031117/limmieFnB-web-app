@@ -91,22 +91,21 @@
         @endforeach
     </div>
 
-    <!-- Recipes Grid -->
+    {{-- Recipe Grid --}}
     <div id="recipesGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
         @foreach ($recipes as $recipe)
-            <div class="bg-white rounded-lg shadow p-4 relative group" data-category="{{ strtolower($recipe->category) }}">
+            <a href="{{ route('recipes.show', $recipe->id) }}" class="bg-white rounded-lg shadow p-4 relative group block hover:shadow-lg transition-shadow duration-200" data-category="{{ strtolower($recipe->category) }}">
                 <span class="absolute top-3 right-3 bg-orange-600 text-white text-xs font-semibold px-3 py-1 rounded-full">{{ $recipe->category }}</span>
-                <div class="bg-gray-200 aspect-[4/3] rounded mb-4 flex items-center justify-center text-gray-400 text-xl">
-                    <!-- Placeholder for image -->
+                <div class="bg-gray-200 aspect-[4/3] rounded mb-4 flex items-center justify-center text-gray-400 text-xl overflow-hidden">
                     @if ($recipe->image_url)
-                        <img src="{{ asset('storage/' . $recipe->image_url) }}" alt="{{ $recipe->name }}" class="object-cover w-full h-full rounded">
+                        <img src="{{ asset('storage/' . $recipe->image_url) }}" alt="{{ $recipe->name }}" class="object-cover w-full h-full rounded transition-transform duration-300 group-hover:scale-105">
                     @else
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V7m-4 0L12 13 7 7m7 0V3" />
                         </svg>
                     @endif
                 </div>
-                <h3 class="font-bold text-lg mb-1">{{ $recipe->name}}</h3>
+                <h3 class="font-bold text-lg mb-1">{{ $recipe->name }}</h3>
                 <p class="text-gray-600 text-sm mb-3">{{ $recipe->description }}</p>
                 <div class="flex items-center space-x-3 mb-2">
                     <span class="border border-gray-300 rounded px-2 py-1 text-xs">{{ ucfirst($recipe->difficulty) }}</span>
@@ -130,14 +129,15 @@
                     </svg>
                     <span>Chef {{ $recipe->chef_name }}</span>
                 </div>
-            </div>
+            </a>
         @endforeach
-
+    
         {{-- Empty Recipe --}}
         <div id="recipeEmpty" class="hidden col-span-full text-center text-gray-500 py-8">
             No recipes found
         </div>
     </div>
+    
 </div>
 
 <script>
