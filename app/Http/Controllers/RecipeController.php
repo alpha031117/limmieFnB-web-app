@@ -12,4 +12,11 @@ class RecipeController extends Controller
         $recipes = Recipe::all();
         return view('recipes.index', compact('recipes'));
     }
+
+    // Display Recipe Details
+    public function show($id)
+    {
+        $recipe = Recipe::find($id);
+        return view('recipes.recipe-detail', compact('recipe'));
+    }
 }
