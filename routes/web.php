@@ -2,12 +2,19 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RecipeController;
+use App\Http\Controllers\UserController;
 
+// Login & Signup Routes
+Route::get('login', [UserController::class,'showLogin'])->name('login');
+Route::post('login', [UserController::class, 'login']);
+Route::get('register', [UserController::class, 'showRegister'])->name('register');
+Route::post('register', [UserController::class, 'register']);
+Route::post('logout', [UserController::class, 'logout'])->name('logout');
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Blog Routes
+Route::get('/', [RecipeController::class, 'index'])->name('home');
 
-Route::get('/recipes', [RecipeController::class, 'index']);
+// Recipe Routes
+Route::get('/recipes', [RecipeController::class, 'index'])->name('recipes.index');
 Route::get('/recipes/{id}', [RecipeController::class, 'show'])->name('recipes.show');
 
