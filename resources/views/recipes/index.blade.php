@@ -2,9 +2,19 @@
 
 @section('content')
 <div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-2">Recipes</h1>
-    <p class="text-gray-600 mb-4">Browse our collection of delicious recipes from around the world.</p>
-    <hr class="border-gray-300 border-t" />
+    <h1 class="text-3xl font-bold">Recipes</h1>
+    <div class="flex items-center justify-between mb-4">
+        <div>
+          <p class="text-gray-600">Browse our collection of delicious recipes from around the world.</p>
+        </div>
+        <a href="{{ route('recipes.index') }}">
+          <button type="submit" class="bg-orange-600 text-white py-2 px-4 rounded hover:bg-orange-700 transition cursor-pointer">
+            Add Recipe
+          </button>
+        </a>
+      </div>
+      <hr class="border-gray-300 border-t" />
+      
     <!-- Search and Sort -->
     <div class="flex flex-col md:flex-row md:justify-between md:items-center mt-4 mb-6 space-y-4 md:space-y-0">
         <input type="search" placeholder="Search recipes..." class="border rounded px-4 py-2 w-full md:w-1/3 border-gray-300 focus:border-gray-600 focus:outline-none" id="searchInput" onkeyup="filterRecipes()" />
