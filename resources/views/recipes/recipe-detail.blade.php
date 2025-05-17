@@ -21,7 +21,7 @@
                 <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z"/>
                 <path d="M4 20v-2c0-2.21 3.58-4 8-4s8 1.79 8 4v2"/>
             </svg>
-            <span>By <span class="text-orange-600 font-semibold cursor-pointer hover:underline">Chef {{ $recipe->chef_name }}</span></span>
+            <span>By <span class="text-orange-600 font-semibold cursor-pointer hover:underline">Chef {{ $recipe->chef->name }}</span></span>
         </div>
         <div class="flex items-center gap-1">
             <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
@@ -152,9 +152,14 @@
         <aside class="md:col-span-2 border border-gray-200 rounded p-4 space-y-4">
             <h3 class="font-semibold text-lg mb-2">About the Author</h3>
             <div class="flex items-center gap-3">
-                <div class="w-12 h-12 bg-gray-300 rounded-full"></div>
+                <div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M5.121 17.804A8.966 8.966 0 0112 15c2.485 0 4.757 1 6.414 2.618"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </div>
                 <div>
-                    <div class="font-semibold">{{ $recipe->chef_name }}</div>
+                    <div class="font-semibold">{{ $recipe->chef->name }}</div>
                     <div class="text-xs text-gray-500">Professional Chef</div>
                 </div>
             </div>
@@ -167,7 +172,7 @@
         {{-- Newsletter --}}
         <aside class="md:col-span-2 border border-gray-200 rounded p-4">
             <h3 class="font-semibold text-lg mb-2">Newsletter</h3>
-            <p class="text-xs text-gray-600 mb-4">
+            <p class="text-sm text-gray-600 mb-10">
                 Subscribe to get weekly recipe updates and cooking tips.
             </p>
             <form action="#" method="POST" class="flex gap-2">
