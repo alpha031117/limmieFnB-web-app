@@ -40,7 +40,7 @@
                 </li>
                 @guest
                     <li>
-                        <a href="{{ route('login') }}" class="hover:text-orange-600 font-semibold">Login</a>
+                        <a href="{{ route('login') }}" class="hover:text-orange-600 {{ request()->is('login') ? 'text-orange-600 font-semibold' : '' }}">Login</a>
                     </li>
                 @else
                     <li x-data="{ open: false }" class="relative">
@@ -83,7 +83,7 @@
                 
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
-                                <button type="submit" class="flex items-center w-full px-4 py-2 text-left text-gray-700 hover:bg-orange-100 hover:text-orange-600">
+                                <button type="submit" class="flex items-center w-full px-4 py-2 text-left text-gray-700 hover:bg-orange-100 hover:text-orange-600 cursor-pointer">
                                     Log out
                                 </button>
                             </form>

@@ -108,7 +108,7 @@
                 <span class="absolute top-3 right-3 bg-orange-600 text-white text-xs font-semibold px-3 py-1 rounded-full">{{ $recipe->category }}</span>
                 <div class="bg-gray-200 aspect-[4/3] rounded mb-4 flex items-center justify-center text-gray-400 text-xl overflow-hidden">
                     @if ($recipe->image_url)
-                        <img src="{{ asset('storage/' . $recipe->image_url) }}" alt="{{ $recipe->name }}" class="object-cover w-full h-full rounded transition-transform duration-300 group-hover:scale-105">
+                        <img src="{{ asset('storage/recipes/' . basename($recipe->image_url)) }}" alt="{{ $recipe->name }}" class="object-cover w-full h-full rounded transition-transform duration-300 group-hover:scale-105">
                     @else
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V7m-4 0L12 13 7 7m7 0V3" />
@@ -154,7 +154,7 @@
     // Function to filter recipes based on search input
     function filterRecipes() {
         const input = document.getElementById('searchInput').value.toLowerCase();
-        const recipes = document.querySelectorAll('#recipesGrid > div');
+        const recipes = document.querySelectorAll('#recipesGrid > a');  // <-- fixed selector
         const empty = document.getElementById('recipeEmpty');
 
         let anyVisible = false;
@@ -175,17 +175,15 @@
 
     // Placeholder functions for filtering and sorting
     function filterCategory(category, btn) {
-        const recipes = document.querySelectorAll('#recipesGrid > div');
+        const recipes = document.querySelectorAll('#recipesGrid > a');  // <-- fixed selector
         const buttons = document.querySelectorAll('#filters button');
         const empty = document.getElementById('recipeEmpty');
 
-        // Remove active styling and hide ticks from all buttons
         buttons.forEach(b => {
             b.classList.remove('bg-orange-500', 'text-white');
             b.querySelector('.tick-icon').classList.add('hidden');
         });
 
-        // Add active styling and show tick on clicked button
         btn.classList.add('bg-orange-500', 'text-white');
         btn.querySelector('.tick-icon').classList.remove('hidden');
 
@@ -198,8 +196,8 @@
             });
         } else {
             recipes.forEach(card => {
-                const categories = card.getAttribute('data-category')?.toLowerCase().split(',') || [];
-                if (categories.includes(category)) {
+                const categoryValue = card.getAttribute('data-category')?.toLowerCase() || '';
+                if (categoryValue === category) {
                     card.style.display = '';
                     anyVisible = true;
                 } else {
@@ -208,7 +206,6 @@
             });
         }
 
-        // Show "No recipes found" if nothing visible
         empty.style.display = anyVisible ? 'none' : 'block';
     }
 

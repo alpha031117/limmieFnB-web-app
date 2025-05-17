@@ -40,7 +40,7 @@
 
     {{-- Main Image --}}
     @if ($recipe->image_url)
-        <img src="{{ asset('storage/' . $recipe->image_url) }}" alt="{{ $recipe->name }}" class="w-full aspect-[8/3] object-cover rounded-lg mb-6" />
+        <img src="{{ asset('storage/recipes/' . basename($recipe->image_url)) }}" alt="{{ $recipe->name }}" class="w-full aspect-[8/3] object-cover rounded-lg mb-6" />
     @else
         <div class="w-full aspect-[4/3] bg-gray-200 rounded-lg flex items-center justify-center mb-6">
             <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">

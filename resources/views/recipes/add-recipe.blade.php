@@ -20,8 +20,8 @@
         <div>
             <label for="category" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
             <select name="category" id="category" required
-                class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400">
-                <option value="" disabled selected>Select a category</option>
+                class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400 hover:bg-gray-50">
+                <option value="" disabled {{ old('category') ? '' : 'selected' }}>Select a category</option>
                 <option value="dessert" {{ old('category') == 'dessert' ? 'selected' : '' }}>Dessert</option>
                 <option value="lunch" {{ old('category') == 'lunch' ? 'selected' : '' }}>Lunch</option>
                 <option value="dinner" {{ old('category') == 'dinner' ? 'selected' : '' }}>Dinner</option>
@@ -59,12 +59,42 @@
             @enderror
         </div>
 
+        {{-- Ingrediants --}}
+        <div>
+            <label for="ingredients" class="block text-sm font-medium text-gray-700 mb-1">Ingredients</label>
+            <textarea name="ingredients" id="ingredients" rows="4" required
+                class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400">{{ old('ingredients') }}</textarea>
+            @error('ingredients')
+                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+
         <!-- Duration -->
         <div>
             <label for="duration" class="block text-sm font-medium text-gray-700 mb-1">Duration (minutes)</label>
             <input type="number" name="duration" id="duration" min="1" value="{{ old('duration') }}" required
                 class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400" />
             @error('duration')
+                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+
+        {{-- Prep Time --}}
+        <div>
+            <label for="prep_time" class="block text-sm font-medium text-gray-700 mb-1">Preparation Time (minutes)</label>
+            <input type="number" name="prep_time" id="prep_time" min="1" value="{{ old('prep_time') }}" required
+                class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400" />
+            @error('prep_time')
+                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+
+        {{-- Cook Time --}}
+        <div>
+            <label for="cook_time" class="block text-sm font-medium text-gray-700 mb-1">Cooking Time (minutes)</label>
+            <input type="number" name="cook_time" id="cook_time" min="1" value="{{ old('cook_time') }}" required
+                class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400" />
+            @error('cook_time')
                 <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
             @enderror
         </div>
@@ -80,6 +110,26 @@
             @enderror
         </div>
 
+        <!-- Instruction -->
+        <div>
+            <label for="instruction" class="block text-sm font-medium text-gray-700 mb-1">Instruction</label>
+            <textarea name="instruction" id="instruction" rows="4" required
+                class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400">{{ old('instruction') }}</textarea>
+            @error('instruction')
+                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <!-- Servings -->
+        <div>
+            <label for="servings" class="block text-sm font-medium text-gray-700 mb-1">Servings</label>
+            <input type="number" name="servings" id="servings" min="1" value="{{ old('servings') }}" required
+                class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400" />
+            @error('servings')
+                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+
         <!-- Image Upload -->
         <div>
             <label for="image" class="block text-sm font-medium text-gray-700 mb-1">Upload Image</label>
@@ -89,6 +139,8 @@
                 <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
             @enderror
         </div>
+
+        <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
 
         <!-- Submit Button -->
         <div>
