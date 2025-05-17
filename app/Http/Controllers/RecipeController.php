@@ -98,7 +98,7 @@ class RecipeController extends Controller
         if (Auth::user()->id !== $recipe->chef_id) {
             \Illuminate\Support\Facades\Log::info('User ID: ' . Auth::user()->id);
             \Illuminate\Support\Facades\Log::info('Recipe User ID: '. $recipe->chef_id);
-            abort(403, 'Unauthorized');
+            return redirect()->route('recipes.index')->with('failed', 'Unauthorized Access!');
         }
 
         return view('recipes.edit-recipe', compact('recipe'));
@@ -112,7 +112,7 @@ class RecipeController extends Controller
         if (Auth::user()->id !== $recipe->chef_id) {
             \Illuminate\Support\Facades\Log::info('User ID: ' . Auth::user()->id);
             \Illuminate\Support\Facades\Log::info('Recipe User ID: '. $recipe->chef_id);
-            abort(403, 'Unauthorized');
+            return redirect()->route('recipes.index')->with('failed', 'Unauthorized Access!');
         }
 
         // Validation rules (match your recipe fields)
@@ -157,7 +157,7 @@ class RecipeController extends Controller
         $recipe = Recipe::findOrFail($recipeID);
 
         if (!$user || ($user->id !== $recipe->chef_id)) {
-            abort(403, 'Unauthorized');
+            return redirect()->route('recipes.index')->with('failed', 'Unauthorized Access!');
         }
 
         // Delete image file from storage if exists

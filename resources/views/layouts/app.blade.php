@@ -82,7 +82,6 @@
                                 </svg>
                             </div>
                         </button>
-                
                         <div
                             x-show="open"
                             @click.outside="open = false"
@@ -99,11 +98,14 @@
                                 <p class="font-semibold text-gray-900">{{ auth()->user()->name ?? 'Jane Doe' }}</p>
                                 <p class="text-xs text-gray-400 truncate">{{ auth()->user()->email ?? 'jane.doe@example.com' }}</p>
                             </div>
-                
-                            <a href="{{ route('recipes.my', ['id' => auth()->id()]) }}" class="flex items-center px-4 py-2 text-gray-700 hover:bg-orange-100 hover:text-orange-600">
-                                My Recipes
-                            </a>
                             
+                            @auth
+                                @if(auth()->user()->role !== 'admin')
+                                    <a href="{{ route('recipes.my', ['id' => auth()->id()]) }}" class="flex items-center px-4 py-2 text-gray-700 hover:bg-orange-100 hover:text-orange-600">
+                                        My Recipes
+                                    </a>
+                                @endif
+                            @endauth
                 
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf

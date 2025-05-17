@@ -32,7 +32,7 @@ class AdminController extends Controller
         // Authorize admin only - adjust your auth logic accordingly
         $user = Auth::user();
         if (!$user || $user->role !== 'admin') {
-            abort(403, 'Unauthorized');
+            return redirect()->route('recipes.index')->with('failed', 'Unauthorized Access!');
         }
 
         $recipe = Recipe::findOrFail($recipeId);
