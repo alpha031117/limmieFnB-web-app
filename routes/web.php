@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\UserController;
@@ -12,7 +13,7 @@ Route::post('register', [UserController::class, 'register']);
 Route::post('logout', [UserController::class, 'logout'])->name('logout');
 
 // Blog Routes
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'checkrole:user'])->group(function () {
 
     Route::get('/', [RecipeController::class, 'index'])->name('home');
 
@@ -27,6 +28,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/recipes', [RecipeController::class, 'store'])->name('recipes.store');
     Route::get('/recipes/{id}', [RecipeController::class, 'show'])->name('recipes.show');
 });
+
+Route::middleware(['auth', 'checkrole:admin'] )->group(function () {
+    Route::get('/admin', [AdminController::class,'index'])->name('admin.index');
+    Route::get('/admin/recipe-logs', [AdminController::class, 'recipe_logs'])->name('admin.recipe.log');
+    Route::post('/admin/recipes/{recipe}/undo', [AdminController::class, 'undoLastChange'])->name('admin.recipes.undo');
+});
+
 
 
 // Route::post('/recipes', [RecipeController::class, 'store'])->name('recipes.store');

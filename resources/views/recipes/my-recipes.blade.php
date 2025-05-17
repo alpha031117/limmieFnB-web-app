@@ -52,7 +52,7 @@
                             @endif
                         </div>
                         <h3 class="font-bold text-lg mb-1">{{ $recipe->name }}</h3>
-                        <p class="text-gray-600 text-sm mb-2">{{ $recipe->description }}</p>
+                        <p class="text-gray-600 text-sm mb-2 max-w-full overflow-hidden break-words line-clamp-3">{{ $recipe->description }}</p>
                         <div class="flex justify-between text-xs text-gray-500">
                             <span>{{ ucfirst($recipe->category) }}</span>
                         </div>

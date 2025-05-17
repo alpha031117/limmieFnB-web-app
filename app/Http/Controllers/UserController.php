@@ -78,7 +78,7 @@ class UserController extends Controller
     {
         switch ($user->role) {
             case 'admin':
-                return redirect()->route('admin.dashboard');  // define this route
+                return redirect()->route('admin.index');  // define this route
             case 'writer':
                 return redirect()->route('writer.dashboard'); // define this route
             case 'public':
