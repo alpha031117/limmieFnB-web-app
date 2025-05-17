@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Models\Recipe;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class RecipeController extends Controller
 {
@@ -93,8 +95,8 @@ class RecipeController extends Controller
     {
         $recipe = Recipe::findOrFail($recipeID);
         // Authorization: only owner or admin can edit
-        if (auth()->user()->id !== $recipe->chef_id) {
-            \Illuminate\Support\Facades\Log::info('User ID: ' . auth()->user()->id);
+        if (Auth::user()->id !== $recipe->chef_id) {
+            \Illuminate\Support\Facades\Log::info('User ID: ' . Auth::user()->id);
             \Illuminate\Support\Facades\Log::info('Recipe User ID: '. $recipe->chef_id);
             abort(403, 'Unauthorized');
         }
@@ -107,8 +109,8 @@ class RecipeController extends Controller
         $recipe = Recipe::findOrFail($recipeID);
 
         // Authorization again
-        if (auth()->user()->id !== $recipe->chef_id) {
-            \Illuminate\Support\Facades\Log::info('User ID: ' . auth()->user()->id);
+        if (Auth::user()->id !== $recipe->chef_id) {
+            \Illuminate\Support\Facades\Log::info('User ID: ' . Auth::user()->id);
             \Illuminate\Support\Facades\Log::info('Recipe User ID: '. $recipe->chef_id);
             abort(403, 'Unauthorized');
         }
@@ -151,7 +153,7 @@ class RecipeController extends Controller
     public function destroy(Request $request, $recipeID)
     {
         // Authorize: only owner or admin can delete
-        $user = auth()->user();
+        $user = Auth::user();
         $recipe = Recipe::findOrFail($recipeID);
 
         if (!$user || ($user->id !== $recipe->chef_id)) {

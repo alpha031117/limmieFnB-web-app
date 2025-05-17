@@ -89,14 +89,14 @@
                     tabindex="-1"
                 >
                     <div class="py-1">
-                        <template x-for="option in ['Newest', 'Most Popular', 'Highest Rated', 'Cooking Time (Low to High)', 'Cooking Time (High to Low)']" :key="option">
+                        <template x-for="option in ['Newest', 'Highest Rated', 'Difficulty (Easy to High)', 'Difficulty (High to Easy)', 'Cooking Time (Low to High)', 'Cooking Time (High to Low)']" :key="option">
                             <a
-                            href="#"
-                            @click.prevent="selected = option; open = false"
-                            class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer"
-                            role="menuitem"
-                            tabindex="-1"
-                            :class="{ 'bg-gray-100 font-semibold': selected === option }"
+                                href="#"
+                                @click.prevent="selected = option; open = false; $nextTick(() => { sortRecipes(selected); })"
+                                class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer"
+                                role="menuitem"
+                                tabindex="-1"
+                                :class="{ 'bg-gray-100 font-semibold': selected === option }"
                             >
                             <svg 
                                 x-show="selected === option" 
@@ -139,7 +139,7 @@
         @foreach ($recipes as $recipe)
             <a href="{{ route('recipes.show', $recipe->id) }}" 
                 class="bg-white rounded-lg shadow p-4 relative group block hover:shadow-lg transition-shadow duration-200" 
-                data-category="{{ strtolower($recipe->category) }}">
+                data-category="{{ strtolower($recipe->category) }}" data-created-at="{{ $recipe->created_at->timestamp }}">
                 
                 <!-- Category badge -->
                 <span class="absolute top-3 right-3 bg-orange-600 text-white text-xs font-semibold px-3 py-1 rounded-full z-10">
@@ -161,7 +161,7 @@
             
                 <!-- Recipe details -->
                 <h3 class="font-bold text-lg mb-1">{{ $recipe->name }}</h3>
-                <p class="text-gray-600 text-sm mb-3">{{ $recipe->description }}</p>
+                <p class="text-gray-600 text-sm mb-3 max-w-full overflow-hidden break-words line-clamp-3">{{ $recipe->description }}</p>
             
                 <div class="flex items-center space-x-3 mb-2">
                     <span class="border border-gray-300 rounded px-2 py-1 text-xs">{{ ucfirst($recipe->difficulty) }}</span>
@@ -256,6 +256,79 @@
 
         empty.style.display = anyVisible ? 'none' : 'block';
     }
+
+    function sortRecipes(selectedOption) {
+        // Map selectedOption to internal keys
+        let sortBy = 'newest'; // default
+
+        switch (selectedOption.toLowerCase()) {
+            case 'newest':
+                sortBy = 'newest';
+                break;
+            case 'highest rated':
+                sortBy = 'highestRated';
+                break;
+            case 'difficulty (easy to high)':
+                sortBy = 'difficultyAsc';
+                break;
+            case 'difficulty (high to easy)':
+                sortBy = 'difficultyDesc';
+                break;
+            case 'cooking time (low to high)':
+                sortBy = 'durationAsc';
+                break;
+            case 'cooking time (high to low)':
+                sortBy = 'durationDesc';
+                break;
+            default:
+                sortBy = 'newest';
+        }
+
+        const recipesGrid = document.getElementById('recipesGrid');
+        const recipeCards = Array.from(recipesGrid.querySelectorAll('a')); // all recipe cards
+
+        // Helper for difficulty ranking
+        function getDifficultyRank(difficulty) {
+            const ranks = { 'easy': 1, 'medium': 2, 'hard': 3 };
+            return ranks[difficulty.toLowerCase()] || 0;
+        }
+
+        recipeCards.sort((a, b) => {
+            const aDifficulty = a.querySelector('span.border')?.textContent || '';
+            const bDifficulty = b.querySelector('span.border')?.textContent || '';
+
+            const aDuration = parseInt(a.querySelector('div.flex.items-center.text-gray-600.text-xs.space-x-1 span')?.textContent) || 0;
+            const bDuration = parseInt(b.querySelector('div.flex.items-center.text-gray-600.text-xs.space-x-1 span')?.textContent) || 0;
+
+            const aRating = parseFloat(a.querySelector('div.flex.items-center.text-yellow-500.text-xs span')?.textContent) || 0;
+            const bRating = parseFloat(b.querySelector('div.flex.items-center.text-yellow-500.text-xs span')?.textContent) || 0;
+
+            const aCreated = parseInt(a.getAttribute('data-created-at')) || 0;
+            const bCreated = parseInt(b.getAttribute('data-created-at')) || 0;
+
+            switch(sortBy) {
+                case 'newest':
+                    return bCreated - aCreated; // newest first
+                case 'highestRated':
+                    return bRating - aRating; // highest rating first
+                case 'difficultyAsc':
+                    return getDifficultyRank(aDifficulty) - getDifficultyRank(bDifficulty);
+                case 'difficultyDesc':
+                    return getDifficultyRank(bDifficulty) - getDifficultyRank(aDifficulty);
+                case 'durationAsc':
+                    return aDuration - bDuration;
+                case 'durationDesc':
+                    return bDuration - aDuration;
+                default:
+                    return 0;
+            }
+        });
+
+        // Append sorted cards back to grid
+        recipeCards.forEach(card => recipesGrid.appendChild(card));
+    }
+
+
 
 </script>
 @endsection

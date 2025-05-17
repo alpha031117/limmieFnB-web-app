@@ -29,17 +29,38 @@
     <!-- Navigation Bar -->
     <nav class="bg-white shadow-md py-4">
         <div class="container mx-auto px-4 flex justify-between items-center">
-            <a href="{{ url('/') }}" class="text-xl font-bold text-orange-600">Limmie Food Blog</a>
+            @auth
+                @if(auth()->user()->role === 'admin')
+                    <a href="{{ url('/admin') }}" class="text-xl font-bold text-orange-600">Limmie Food Blog</a>
+                @else
+                    <a href="{{ url('/') }}" class="text-xl font-bold text-orange-600">Limmie Food Blog</a>
+                @endif
+            @endauth
             <ul class="flex items-center space-x-6">
-                <li>
-                    <a href="{{ url('/blog') }}" class="hover:text-orange-600 {{ request()->is('blog*') ? 'text-orange-600 font-semibold' : '' }}">Blog</a>
-                </li>
-                <li>
-                    <a href="{{ url('/recipes') }}" class="hover:text-orange-600 {{ request()->is('recipes*') ? 'text-orange-600 font-semibold' : '' }}">Recipes</a>
-                </li>
-                <li>
-                    <a href="{{ url('/about') }}" class="hover:text-orange-600 {{ request()->is('about*') ? 'text-orange-600 font-semibold' : '' }}">About</a>
-                </li>
+                @auth
+                    @if(auth()->user()->role === 'admin')
+                        <li>
+                            <a href="{{ url('/admin') }}" class="hover:text-orange-600 {{ request()->is('admin') ? 'text-orange-600 font-semibold' : '' }}">Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="{{ url('/blog') }}" class="hover:text-orange-600 {{ request()->is('blog*') ? 'text-orange-600 font-semibold' : '' }}">Blog Post</a>
+                        </li>
+                        <li>
+                            <a href="{{ url('/admin/recipe-logs') }}" class="hover:text-orange-600 {{ request()->is('admin/recipe-logs') ? 'text-orange-600 font-semibold' : '' }}">Recipe Modification Logs</a>
+                        </li>
+                    @else
+                        <li>
+                            <a href="{{ url('/blog') }}" class="hover:text-orange-600 {{ request()->is('blog*') ? 'text-orange-600 font-semibold' : '' }}">Blog</a>
+                        </li>
+                        <li>
+                            <a href="{{ url('/recipes') }}" class="hover:text-orange-600 {{ request()->is('recipes*') ? 'text-orange-600 font-semibold' : '' }}">Recipes</a>
+                        </li>
+                        <li>
+                            <a href="{{ url('/about') }}" class="hover:text-orange-600 {{ request()->is('about*') ? 'text-orange-600 font-semibold' : '' }}">About</a>
+                        </li>
+                    @endif
+                    
+                @endauth
                 @guest
                     <li>
                         <a href="{{ route('login') }}" class="hover:text-orange-600 {{ request()->is('login') ? 'text-orange-600 font-semibold' : '' }}">Login</a>

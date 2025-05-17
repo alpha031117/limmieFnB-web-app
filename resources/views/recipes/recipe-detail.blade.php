@@ -108,9 +108,9 @@
 
         {{-- Nutrition --}}
         @php
-        $nutrition = "550 calories, 30g fat, 40g carbohydrates, 15g protein";
+        // $nutrition = "550 calories, 30g fat, 40g carbohydrates, 15g protein";
 
-        $parts = array_map('trim', explode(',', $nutrition));
+        $parts = array_map('trim', explode(',', $recipe->nutrition));
 
         $nutrients = [];
 
@@ -149,7 +149,7 @@
     {{-- Right Sidebar --}}
     <div class="mt-12 grid grid-cols-1 md:grid-cols-4 gap-8">
         {{-- Author --}}
-        <aside class="md:col-span-1 border border-gray-200 rounded p-4 space-y-4">
+        <aside class="md:col-span-2 border border-gray-200 rounded p-4 space-y-4">
             <h3 class="font-semibold text-lg mb-2">About the Author</h3>
             <div class="flex items-center gap-3">
                 <div class="w-12 h-12 bg-gray-300 rounded-full"></div>
@@ -162,20 +162,6 @@
                 Passionate about {{ $recipe->category }} cuisine with over 15 years of experience in top restaurants around the world.
             </p>
             <button class="w-full border border-gray-300 py-2 rounded hover:bg-gray-100 text-sm font-semibold">View Profile</button>
-        </aside>
-
-        {{-- You Might Also Like --}}
-        <aside class="md:col-span-1 border border-gray-200 rounded p-4 space-y-4">
-            <h3 class="font-semibold text-lg mb-2">You Might Also Like</h3>
-            @for ($i = 0; $i < 3; $i++)
-                <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 bg-gray-300 rounded"></div>
-                    <div class="text-xs">
-                        <div class="font-semibold">Garlic Butter Shrimp Pasta</div>
-                        <div>25 min · Easy</div>
-                    </div>
-                </div>
-            @endfor
         </aside>
 
         {{-- Newsletter --}}
