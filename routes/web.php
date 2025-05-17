@@ -12,15 +12,22 @@ Route::post('register', [UserController::class, 'register']);
 Route::post('logout', [UserController::class, 'logout'])->name('logout');
 
 // Blog Routes
-Route::get('/', [RecipeController::class, 'index'])->name('home');
+Route::middleware(['auth'])->group(function () {
 
-// Recipe Routes
-Route::get('/recipes', [RecipeController::class, 'index'])->name('recipes.index');
-// Recipe Creation Routes
-Route::get('/recipes/create', [RecipeController::class, 'create'])->name('recipes.create');
-Route::post('/recipes', [RecipeController::class, 'store'])->name('recipes.store');
-// Recipe Details Route
-Route::get('/recipes/{id}', [RecipeController::class, 'show'])->name('recipes.show');
+    Route::get('/', [RecipeController::class, 'index'])->name('home');
+
+    // Recipe Routes
+    Route::get('/recipes', [RecipeController::class, 'index'])->name('recipes.index');  
+    Route::get('/recipes/{id}/edit', [RecipeController::class,'edit'])->name('recipes.edit');
+    Route::put('/recipes/{id}', [RecipeController::class,'update'])->name('recipes.update');
+    Route::delete('/recipes/{id}', [RecipeController::class, 'destroy'])->name('recipes.destroy');
+
+    Route::get('/recipes/my/{id}', [RecipeController::class, 'myRecipes'])->name('recipes.my');
+    Route::get('/recipes/create', [RecipeController::class, 'create'])->name('recipes.create');
+    Route::post('/recipes', [RecipeController::class, 'store'])->name('recipes.store');
+    Route::get('/recipes/{id}', [RecipeController::class, 'show'])->name('recipes.show');
+});
+
 
 // Route::post('/recipes', [RecipeController::class, 'store'])->name('recipes.store');
 

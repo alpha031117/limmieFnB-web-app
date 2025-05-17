@@ -25,7 +25,11 @@ return new class extends Migration
             $table->text('ingredients');
             $table->text('nutrition');
             $table->integer('servings');
-            $table->string('chef_name');
+            // Foreign key column for the chef (user)
+            $table->unsignedBigInteger('chef_id');
+
+            // Set up foreign key constraint
+            $table->foreign('chef_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('image_url');
             $table->timestamps();
         });
