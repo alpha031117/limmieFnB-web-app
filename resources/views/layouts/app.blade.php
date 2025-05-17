@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>@yield('title', 'Limmie Food Blog')</title>
+    <script src="//unpkg.com/alpinejs" defer></script>
+
 
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
@@ -40,7 +42,7 @@
                 </li>
                 @guest
                     <li>
-                        <a href="{{ route('login') }}" class="hover:text-orange-600 font-semibold">Login</a>
+                        <a href="{{ route('login') }}" class="hover:text-orange-600 {{ request()->is('login') ? 'text-orange-600 font-semibold' : '' }}">Login</a>
                     </li>
                 @else
                     <li x-data="{ open: false }" class="relative">
@@ -77,13 +79,14 @@
                                 <p class="text-xs text-gray-400 truncate">{{ auth()->user()->email ?? 'jane.doe@example.com' }}</p>
                             </div>
                 
-                            <a href="{{ route('recipes.index') }}" class="flex items-center px-4 py-2 text-gray-700 hover:bg-orange-100 hover:text-orange-600">
+                            <a href="{{ route('recipes.my', ['id' => auth()->id()]) }}" class="flex items-center px-4 py-2 text-gray-700 hover:bg-orange-100 hover:text-orange-600">
                                 My Recipes
                             </a>
+                            
                 
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
-                                <button type="submit" class="flex items-center w-full px-4 py-2 text-left text-gray-700 hover:bg-orange-100 hover:text-orange-600">
+                                <button type="submit" class="flex items-center w-full px-4 py-2 text-left text-gray-700 hover:bg-orange-100 hover:text-orange-600 cursor-pointer">
                                     Log out
                                 </button>
                             </form>

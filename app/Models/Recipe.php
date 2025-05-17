@@ -10,4 +10,9 @@ class Recipe extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'description', 'difficulty', 'duration', 'rating', 'category', 'prep_time', 'cook_time', 'intruction', 'ingredients', 'nutrition', 'servings', 'chef_name', 'image'];
+
+    public function chef()
+    {
+        return $this->belongsTo(User::class, 'chef_id');
+    }
 }

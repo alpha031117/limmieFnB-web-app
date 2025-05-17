@@ -1,6 +1,39 @@
 @extends('layouts.app')
 
 @section('content')
+@if(session('success'))
+    <div 
+        x-data="{ show: true }" 
+        x-show="show" 
+        x-init="setTimeout(() => show = false, 4000)"
+        x-transition 
+        class="fixed top-5 right-5 z-50 max-w-sm w-full bg-white border border-gray-300 rounded-lg shadow-lg p-4 flex items-center space-x-3"
+        role="alert"
+    >
+        <!-- Icon -->
+        <svg class="h-6 w-6 text-green-500 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+
+        <!-- Text -->
+        <div class="flex-1">
+            <p class="text-sm font-semibold text-gray-900">Successfully saved!</p>
+            <p class="text-sm text-gray-500">{{ session('success') }}</p>
+        </div>
+
+        <!-- Close button -->
+        <button 
+            @click="show = false"
+            class="text-gray-400 hover:text-gray-600 focus:outline-none"
+            aria-label="Close notification"
+        >
+            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    </div>
+@endif
+
 <div class="container mx-auto px-4 py-8">
     <h1 class="text-3xl font-bold">Recipes</h1>
     <div class="flex items-center justify-between mb-4">
@@ -104,19 +137,32 @@
     {{-- Recipe Grid --}}
     <div id="recipesGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
         @foreach ($recipes as $recipe)
-            <a href="{{ route('recipes.show', $recipe->id) }}" class="bg-white rounded-lg shadow p-4 relative group block hover:shadow-lg transition-shadow duration-200" data-category="{{ strtolower($recipe->category) }}">
-                <span class="absolute top-3 right-3 bg-orange-600 text-white text-xs font-semibold px-3 py-1 rounded-full">{{ $recipe->category }}</span>
+            <a href="{{ route('recipes.show', $recipe->id) }}" 
+                class="bg-white rounded-lg shadow p-4 relative group block hover:shadow-lg transition-shadow duration-200" 
+                data-category="{{ strtolower($recipe->category) }}">
+                
+                <!-- Category badge -->
+                <span class="absolute top-3 right-3 bg-orange-600 text-white text-xs font-semibold px-3 py-1 rounded-full z-10">
+                    {{ $recipe->category }}
+                </span>
+            
+                <!-- Image container -->
                 <div class="bg-gray-200 aspect-[4/3] rounded mb-4 flex items-center justify-center text-gray-400 text-xl overflow-hidden">
                     @if ($recipe->image_url)
-                        <img src="{{ asset('storage/' . $recipe->image_url) }}" alt="{{ $recipe->name }}" class="object-cover w-full h-full rounded transition-transform duration-300 group-hover:scale-105">
+                        <img src="{{ asset('storage/recipes/' . basename($recipe->image_url)) }}" 
+                            alt="{{ $recipe->name }}" 
+                            class="object-cover w-full h-full rounded transition-transform duration-300 group-hover:scale-105" />
                     @else
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V7m-4 0L12 13 7 7m7 0V3" />
                         </svg>
                     @endif
                 </div>
+            
+                <!-- Recipe details -->
                 <h3 class="font-bold text-lg mb-1">{{ $recipe->name }}</h3>
                 <p class="text-gray-600 text-sm mb-3">{{ $recipe->description }}</p>
+            
                 <div class="flex items-center space-x-3 mb-2">
                     <span class="border border-gray-300 rounded px-2 py-1 text-xs">{{ ucfirst($recipe->difficulty) }}</span>
                     <div class="flex items-center text-gray-600 text-xs space-x-1">
@@ -133,19 +179,21 @@
                         <span>{{ $recipe->rating }}</span>
                     </div>
                 </div>
+            
                 <div class="flex items-center text-gray-700 text-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A8.966 8.966 0 0112 15c2.485 0 4.757 1 6.414 2.618M9 7a4 4 0 118 0 4 4 0 01-8 0z" />
                     </svg>
-                    <span>Chef {{ $recipe->chef_name }}</span>
+                    <span>Chef {{ $recipe->chef->name ?? 'Unknown' }}</span>
                 </div>
             </a>
         @endforeach
-    
-        {{-- Empty Recipe --}}
-        <div id="recipeEmpty" class="hidden col-span-full text-center text-gray-500 py-8">
-            No recipes found
-        </div>
+        
+        @if ($recipes->isEmpty())
+            <div id="recipeEmpty" class="col-span-full text-center text-gray-500 py-8">
+                No recipes found
+            </div>
+        @endif
     </div>
     
 </div>
@@ -154,7 +202,7 @@
     // Function to filter recipes based on search input
     function filterRecipes() {
         const input = document.getElementById('searchInput').value.toLowerCase();
-        const recipes = document.querySelectorAll('#recipesGrid > div');
+        const recipes = document.querySelectorAll('#recipesGrid > a');  // <-- fixed selector
         const empty = document.getElementById('recipeEmpty');
 
         let anyVisible = false;
@@ -175,17 +223,15 @@
 
     // Placeholder functions for filtering and sorting
     function filterCategory(category, btn) {
-        const recipes = document.querySelectorAll('#recipesGrid > div');
+        const recipes = document.querySelectorAll('#recipesGrid > a');  // <-- fixed selector
         const buttons = document.querySelectorAll('#filters button');
         const empty = document.getElementById('recipeEmpty');
 
-        // Remove active styling and hide ticks from all buttons
         buttons.forEach(b => {
             b.classList.remove('bg-orange-500', 'text-white');
             b.querySelector('.tick-icon').classList.add('hidden');
         });
 
-        // Add active styling and show tick on clicked button
         btn.classList.add('bg-orange-500', 'text-white');
         btn.querySelector('.tick-icon').classList.remove('hidden');
 
@@ -198,8 +244,8 @@
             });
         } else {
             recipes.forEach(card => {
-                const categories = card.getAttribute('data-category')?.toLowerCase().split(',') || [];
-                if (categories.includes(category)) {
+                const categoryValue = card.getAttribute('data-category')?.toLowerCase() || '';
+                if (categoryValue === category) {
                     card.style.display = '';
                     anyVisible = true;
                 } else {
@@ -208,7 +254,6 @@
             });
         }
 
-        // Show "No recipes found" if nothing visible
         empty.style.display = anyVisible ? 'none' : 'block';
     }
 
