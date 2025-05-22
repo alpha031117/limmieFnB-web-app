@@ -64,6 +64,16 @@
             @enderror
         </div>
 
+        {{-- Ingrediants --}}
+        <div>
+            <label for="ingredients" class="block text-sm font-medium text-gray-700 mb-1">Ingredients</label>
+            <textarea name="ingredients" id="ingredients" rows="4" required
+                class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400">{{ old('ingredients', $recipe->ingredients) }}</textarea>
+            @error('ingredients')
+                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+
         <!-- Duration -->
         <div>
             <label for="duration" class="block text-sm font-medium text-gray-700 mb-1">Duration (minutes)</label>

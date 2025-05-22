@@ -1,39 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-@if(session('success'))
-    <div 
-        x-data="{ show: true }" 
-        x-show="show" 
-        x-init="setTimeout(() => show = false, 4000)"
-        x-transition 
-        class="fixed top-5 right-5 z-50 max-w-sm w-full bg-white border border-gray-300 rounded-lg shadow-lg p-4 flex items-center space-x-3"
-        role="alert"
-    >
-        <!-- Icon -->
-        <svg class="h-6 w-6 text-green-500 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-        </svg>
-
-        <!-- Text -->
-        <div class="flex-1">
-            <p class="text-sm font-semibold text-gray-900">Successfully saved!</p>
-            <p class="text-sm text-gray-500">{{ session('success') }}</p>
-        </div>
-
-        <!-- Close button -->
-        <button 
-            @click="show = false"
-            class="text-gray-400 hover:text-gray-600 focus:outline-none"
-            aria-label="Close notification"
-        >
-            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-            </svg>
-        </button>
-    </div>
-@endif
-
 <div class="container mx-auto px-4 py-8" x-data="deleteModal()">
     <h1 class="text-3xl font-bold mb-6 text-orange-600">My Recipes</h1>
 
@@ -67,7 +34,7 @@
 
                         <!-- Delete Button triggers modal -->
                         <button type="button"
-                            @click="openModal({{ $recipe->id }})"
+                            @click="openModal({{ $recipe->id }}, '{{ addslashes($recipe->name) }}')"
                             class="absolute bottom-3 right-3 bg-red-500 text-white text-xs px-3 py-1 rounded hover:bg-red-700 transition"
                             title="Delete Recipe">
                             Delete
@@ -80,9 +47,13 @@
         <div class="mt-6">
             {{ $recipes->links() }}  {{-- pagination links --}}
         </div>
+        
+    @else
+        <p class="text-gray-600">You have not created any recipes yet.</p>
+    @endif
 
-        <!-- Delete Confirmation Modal -->
-        <div
+    <!-- Delete Confirmation Modal (Single Instance) -->
+    <div
         x-show="isOpen"
         x-transition:enter="ease-out duration-300"
         x-transition:enter-start="opacity-0 scale-95"
@@ -103,7 +74,7 @@
                 </div>
                 <div>
                     <h3 class="text-lg font-semibold text-gray-900" id="modal-title">Delete Recipe</h3>
-                    <p class="mt-2 text-sm text-gray-600">Are you sure you want to delete this recipe? This action cannot be undone.</p>
+                    <p class="mt-2 text-sm text-gray-600">Are you sure you want to delete the recipe <strong x-text="recipeName"></strong>? This action cannot be undone.</p>
                 </div>
             </div>
 
@@ -112,7 +83,7 @@
                     Cancel
                 </button>
 
-                <form action="{{ route('recipes.destroy', $recipe->id) }}" method="POST" class="inline">
+                <form :action="`/recipes/${recipeId}`" method="POST" class="inline">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700 font-semibold">
@@ -122,10 +93,6 @@
             </div>
         </div>
     </div>
-    @else
-        <p class="text-gray-600">You have not created any recipes yet.</p>
-    @endif
-
 </div>
 
 <script>
@@ -133,13 +100,16 @@
         return {
             isOpen: false,
             recipeId: null,
-            openModal(id) {
+            recipeName: '',
+            openModal(id, name) {
                 this.recipeId = id;
+                this.recipeName = name;
                 this.isOpen = true;
             },
             closeModal() {
                 this.isOpen = false;
                 this.recipeId = null;
+                this.recipeName = '';
             }
         }
     }

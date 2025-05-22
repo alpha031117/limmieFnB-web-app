@@ -121,6 +121,7 @@ class RecipeController extends Controller
             'category' => 'required|string',
             'description' => 'required|string',
             'difficulty' => 'required|in:easy,medium,hard',
+            'ingredients' =>'required|string',
             'duration' => 'required|integer|min:1',
             'prep_time' => 'required|integer|min:0',
             'cook_time' => 'required|integer|min:0',
@@ -152,6 +153,7 @@ class RecipeController extends Controller
 
     public function destroy(Request $request, $recipeID)
     {
+        \Illuminate\Support\Facades\Log::info('Recipe ID: ' . $recipeID);
         // Authorize: only owner or admin can delete
         $user = Auth::user();
         $recipe = Recipe::findOrFail($recipeID);
