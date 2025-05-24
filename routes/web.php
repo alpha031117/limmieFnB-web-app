@@ -6,7 +6,7 @@ use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\BlogController;
-
+use App\Http\Controllers\AdminBlogController;
 
 // Login & Signup Routes
 Route::get('login', [UserController::class,'showLogin'])->name('login');
@@ -42,17 +42,22 @@ Route::middleware(['auth', 'checkrole:user'])->group(function () {
     Route::put('/blog/{id}', [BlogController::class,'update'])->name('blog.update');
     Route::delete('/blog/{id}', [BlogController::class, 'destroy'])->name('blog.destroy');
 
-    Route::get('/blog/my/{id}', [BlogController::class, 'myRecipes'])->name('blog.my');
+    Route::get('/blog/my/{id}', [BlogController::class, 'myBlog'])->name('blog.my');
     Route::get('/blog/create', [BlogController::class, 'create'])->name('blog.create');
     Route::post('/blog', [BlogController::class, 'store'])->name('blog.store');
     Route::get('/blog/{id}', [BlogController::class, 'show'])->name('blog.show');
 
 });
 
+
 Route::middleware(['auth', 'checkrole:admin'] )->group(function () {
-    Route::get('/admin', [AdminController::class,'index'])->name('admin.index');
-    Route::get('/admin/recipe-logs', [AdminController::class, 'recipe_logs'])->name('admin.recipe.log');
-    Route::post('/admin/recipes/{recipe}/undo', [AdminController::class, 'undoLastChange'])->name('admin.recipes.undo');
+    Route::post('/blogs/{id}/approve', [BlogController::class, 'approve'])->name('blog.approve');
+    Route::post('/blogs/{id}/reject', [BlogController::class, 'reject'])->name('blog.reject');
+    Route::get('/admin', [AdminBlogController::class,'index'])->name('admin.index');
+    Route::get('/admin/recipe-logs', [AdminBlogController::class, 'recipe_logs'])->name('admin.recipe.log');
+    Route::post('/admin/recipes/{recipe}/undo', [AdminBlogController::class, 'undoLastChange'])->name('admin.recipes.undo');
+    Route::patch('/admin/blogs/{blog}/approval', [AdminBlogController::class, 'updateApproval'])->name('admin.blogs.updateApproval');
+
 });
 
 

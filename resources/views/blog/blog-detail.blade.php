@@ -22,9 +22,6 @@
 
     {{-- Title --}}
     <h1 class="text-3xl font-bold mb-1">{{ $blog->name }}</h1>
-    <p class="text-sm text-gray-600 mb-4 max-w-xl">
-        {{ $blog->description }}
-    </p>
 
     {{-- Author and Rating --}}
     <div class="flex items-center gap-4 text-sm text-gray-600 mb-8">
@@ -73,6 +70,10 @@
             </svg>
         </div>
     @endif
+
+        <p class="text-sm text-gray-600 mb-4 max-w-xl">
+        {{ $blog->description }}
+    </p>
 
 <!-- Write a Review -->
 @auth

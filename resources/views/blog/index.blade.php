@@ -93,7 +93,7 @@
     <!-- Category Filters -->
     <div id="filters" class="flex flex-wrap gap-3 mb-8">
         @php
-            $filters = ['All', 'Dessert', 'Lunch', 'Dinner', 'Desserts', 'Vegetarian', 'Vegan', 'Gluten-Free'];
+            $filters = ['All', 'Recipes', 'Cuisine Types', 'Diets & Lifestyles', 'Cooking Techniques', 'Tips & Tricks', 'Travel & Food'];
         @endphp
         @foreach ($filters as $filter)
             <button
@@ -138,9 +138,13 @@
                     </div>
                 </a>
 
-                <!-- Content -->
-                <h3 class="font-bold text-lg mb-1">{{ $blog->name }}</h3>
-                <p class="text-gray-600 text-sm mb-3 line-clamp-3">{{ $blog->description }}</p>
+                <!-- Boxed Description -->
+                <div class="bg-gray-100 border border-gray-300 rounded px-3 py-2 mb-3">
+                    <p class="text-gray-700 text-sm line-clamp-3">{{ $blog->description }}</p>
+                </div>
+
+                <!-- Blog Title -->
+                <h3 class="font-bold text-lg mb-2">{{ $blog->name }}</h3>
 
                 <!-- Optional Rating -->
                 <div class="flex items-center space-x-1 text-yellow-500 text-xs mb-2">
@@ -149,18 +153,24 @@
                     </svg>
                 </div>
 
-                <!-- Delete Button -->
-                <form 
-                    method="POST" 
-                    action="{{ route('blog.destroy', $blog->id) }}" 
-                    onsubmit="return confirm('Are you sure you want to delete this blog post?');"
-                >
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="text-red-600 text-sm hover:underline">
-                        Delete
-                    </button>
-                </form>
+                <!-- Action Buttons -->
+                <div class="flex justify-between items-center mt-2">
+                    <a href="{{ route('blog.edit', $blog->id) }}">
+                        <button class="text-blue-600 text-sm hover:underline">Update</button>
+                    </a>
+
+                    <form 
+                        method="POST" 
+                        action="{{ route('blog.destroy', $blog->id) }}" 
+                        onsubmit="return confirm('Are you sure you want to delete this blog post?');"
+                    >
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="text-red-600 text-sm hover:underline">
+                            Delete
+                        </button>
+                    </form>
+                </div>
             </div>
         @endforeach
     </div>

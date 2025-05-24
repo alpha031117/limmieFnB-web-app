@@ -11,9 +11,17 @@ class BlogController extends Controller
 {
 public function index()
 {
-    $blogs = Blog::with('author')->get(); // Use 'author' not 'user'
+    if (Auth::user()->role === 'admin'){
+        // Admin sees all blogs
+        $blogs = Blog::with('author')->paginate(10);
+    } else {
+        // Normal users see only approved blogs
+        $blogs = Blog::with('author')->where('is_approved', true)->paginate(10);
+    }
+
     return view('blog.index', compact('blogs'));
 }
+
 
 
     // Display Recipe Details
@@ -23,11 +31,12 @@ public function index()
         return view('blog.blog-detail', compact('blog'));
     }
 
-    // Display Recipe Form
+    // Display Blog Form
     public function create()
     {
         return view('blog.add-blog');
     }
+
 
     // Store New Recipe
     public function store(Request $request)
@@ -36,7 +45,7 @@ public function index()
         $validatedData = $request->validate([
             'user_id' => 'required|exists:users,id',
             'name' => 'required|string|max:255',
-            'category' => 'required|string|in:dessert,lunch,dinner,vegetarian,vegan,gluten-free',
+            'category' => 'required|string|in:Recipes,Cuisine Types,Diets & Lifestyles,Cooking Techniques,Tips & Tricks,Travel & Food',
             'description' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
@@ -73,7 +82,7 @@ public function index()
         // Fetch only recipes created by logged in user, paginate for performance
         $blogs = Blog::where('author_id', $user_id)->latest()->paginate(10);
 
-        return view('blog.my-blog', compact('blog'));
+        return view('blog.my-blog', compact('blogs'));
     }
 
     public function edit($blogID)
@@ -86,7 +95,10 @@ public function index()
             return redirect()->route('blog.index')->with('failed', 'Unauthorized Access!');
         }
 
-        return view('blog.edit-blog', compact('blog'));
+        $blog = Blog::findOrFail($blogID);
+        return view('blog.blog-edit', compact('blog'));
+
+
     }
 
     public function update(Request $request, $blogID)
@@ -148,9 +160,40 @@ public function index()
         $blog->delete();
 
         // Redirect back with success message
-        return redirect()->route('blog.my', $user->id)
-                        ->with('success', 'Recipe deleted successfully.');
+        return redirect()->route('blog.blog-my', $user->id)
+                        ->with('success', 'Blog deleted successfully.');
     }
+
+    public function approve($id)
+{
+    $blog = Blog::findOrFail($id);
+
+    // Only admin can approve (you can use middleware or here)
+   if (!Auth::user()->isAdmin()) {
+    return redirect()->route('blog.index')->with('failed', 'Unauthorized Access!');
+}
+
+
+    $blog->is_approved = true;
+    $blog->save();
+
+    return redirect()->back()->with('success', 'Blog post approved successfully.');
+}
+
+public function reject($id)
+{
+    $blog = Blog::findOrFail($id);
+
+    if (!Auth::user()->isAdmin()) {
+        return redirect()->route('blog.index')->with('failed', 'Unauthorized Access!');
+    }
+
+    $blog->is_approved = false;
+    $blog->save();
+
+    return redirect()->back()->with('success', 'Blog post rejected successfully.');
+}
+
 
     public function hasInappropriateReview(): bool
     {

@@ -14,7 +14,7 @@
         @csrf
         @method('PUT')
 
-        <!-- Recipe Name -->
+        <!-- Blog Name -->
         <div>
             <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Blog Name</label>
             <input type="text" name="name" id="name" value="{{ old('name', $Blogs->name) }}" required

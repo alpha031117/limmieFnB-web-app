@@ -22,12 +22,12 @@
             <select name="category" id="category" required
                 class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400 hover:bg-gray-50">
                 <option value="" disabled {{ old('category') ? '' : 'selected' }}>Select a category</option>
-                <option value="dessert" {{ old('category') == 'dessert' ? 'selected' : '' }}>Dessert</option>
-                <option value="lunch" {{ old('category') == 'lunch' ? 'selected' : '' }}>Lunch</option>
-                <option value="dinner" {{ old('category') == 'dinner' ? 'selected' : '' }}>Dinner</option>
-                <option value="vegetarian" {{ old('category') == 'vegetarian' ? 'selected' : '' }}>Vegetarian</option>
-                <option value="vegan" {{ old('category') == 'vegan' ? 'selected' : '' }}>Vegan</option>
-                <option value="gluten-free" {{ old('category') == 'gluten-free' ? 'selected' : '' }}>Gluten-Free</option>
+                <option value="Recipes" {{ old('category') == 'Recipes' ? 'selected' : '' }}>Recipes</option>
+                <option value="Cuisine Types" {{ old('category') == 'Cuissine Types' ? 'selected' : '' }}>Cusisine Types</option>
+                <option value="Diets & Lifestyles" {{ old('category') == 'Diets & Lifestyles' ? 'selected' : '' }}>Diets & Lifestyles</option>
+                <option value="Cooking Techniques" {{ old('category') == 'Cooking Techniques' ? 'selected' : '' }}>Cooking Techniques</option>
+                <option value="Tips & Tricks" {{ old('category') == 'Tips & Tricks' ? 'selected' : '' }}>Tips & Tricks</option>
+                <option value="Travel & Food" {{ old('category') == 'Travel & Food' ? 'selected' : '' }}>GTravel & Food</option>
             </select>
             @error('category')
                 <p class="text-red-600 text-sm mt-1">{{ $message }}</p>

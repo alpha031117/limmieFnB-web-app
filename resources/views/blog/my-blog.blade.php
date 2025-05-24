@@ -93,7 +93,7 @@
     <!-- Category Filters -->
     <div id="filters" class="flex flex-wrap gap-3 mb-8">
         @php
-            $filters = ['All', 'Dessert', 'Lunch', 'Dinner', 'Desserts', 'Vegetarian', 'Vegan', 'Gluten-Free'];
+            $filters = ['All', 'Recipes', 'Cuisine Types', 'Diest & Lifestyles', 'Cooking Techniques', 'Tips & Tricks', 'Travel & Food'];
         @endphp
         @foreach ($filters as $filter)
             <button

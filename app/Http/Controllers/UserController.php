@@ -86,4 +86,5 @@ class UserController extends Controller
                 return redirect()->route('home');             // define home route
         }
     }
+    
 }
