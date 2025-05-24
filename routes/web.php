@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\BlogController;
 
 
 // Login & Signup Routes
@@ -36,6 +37,16 @@ Route::middleware(['auth', 'checkrole:user'])->group(function () {
     Route::post('/recipes', [RecipeController::class, 'store'])->name('recipes.store');
     Route::get('/recipes/{id}', [RecipeController::class, 'show'])->name('recipes.show');
 
+    Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');  
+    Route::get('/blog/{id}/edit', [BlogController::class,'edit'])->name('blog.edit');
+    Route::put('/blog/{id}', [BlogController::class,'update'])->name('blog.update');
+    Route::delete('/blog/{id}', [BlogController::class, 'destroy'])->name('blog.destroy');
+
+    Route::get('/blog/my/{id}', [BlogController::class, 'myRecipes'])->name('blog.my');
+    Route::get('/blog/create', [BlogController::class, 'create'])->name('blog.create');
+    Route::post('/blog', [BlogController::class, 'store'])->name('blog.store');
+    Route::get('/blog/{id}', [BlogController::class, 'show'])->name('blog.show');
+
 });
 
 Route::middleware(['auth', 'checkrole:admin'] )->group(function () {
@@ -47,4 +58,3 @@ Route::middleware(['auth', 'checkrole:admin'] )->group(function () {
 
 
 // Route::post('/recipes', [RecipeController::class, 'store'])->name('recipes.store');
-

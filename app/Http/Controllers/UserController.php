@@ -80,7 +80,7 @@ class UserController extends Controller
             case 'admin':
                 return redirect()->route('admin.index');  // define this route
             case 'writer':
-                return redirect()->route('writer.dashboard'); // define this route
+                return redirect()->route('admin.index'); // define this route
             case 'public':
             default:
                 return redirect()->route('home');             // define home route

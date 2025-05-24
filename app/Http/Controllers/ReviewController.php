@@ -3,22 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Models\Review;
-use App\Models\Recipe;
+use App\Models\Blog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ReviewController extends Controller
 {
     // Store new review
-    public function store(Request $request, Recipe $recipe)
+    public function store(Request $request, Blog $Blog)
     {
         $userId = auth()->id();
 
         // Check if review already exists for this user and recipe
-        $existingReview = $recipe->reviews()->where('user_id', $userId)->first();
+        $existingReview = $Blog->reviews()->where('user_id', $userId)->first();
 
         if ($existingReview) {
-            return back()->with('error', 'You have already submitted a review for this recipe.');
+            return back()->with('error', 'You have already submitted a review for this blog.');
         }
 
         $request->validate([
@@ -26,7 +26,7 @@ class ReviewController extends Controller
             'comment' => 'required|string|max:1000',
         ]);
 
-        $recipe->reviews()->create([
+        $Blog->reviews()->create([
             'user_id' => Auth::id(),
             'rating' => $request->rating,
             'comment' => $request->comment,
@@ -58,7 +58,7 @@ class ReviewController extends Controller
             'comment' => $request->comment,
         ]);
 
-        return redirect()->route('recipes.show', $review->recipe_id)->with('success', 'Review updated successfully.');
+        return redirect()->route('recipes.show', $review->blogID)->with('success', 'Review updated successfully.');
     }
 
     // Delete the review
@@ -68,7 +68,7 @@ class ReviewController extends Controller
 
         $review->delete();
 
-        return redirect()->route('recipes.show', $review->recipe_id)->with('success', 'Review deleted successfully.');
+        return redirect()->route('blog.show', $review->blogID)->with('success', 'Review deleted successfully.');
     }
 
     // Authorization helper: only review author or admin can edit/delete

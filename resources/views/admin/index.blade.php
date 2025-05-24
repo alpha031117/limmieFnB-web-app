@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-6 text-orange-600">Recipe List</h1>
+    <h1 class="text-3xl font-bold mb-6 text-orange-600">Blog List</h1>
 
     @if ($recipes->count() > 0)
     <div class="overflow-x-auto bg-white shadow rounded-lg">
@@ -11,37 +11,29 @@
                 <tr>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Difficulty</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Duration</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Chef</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Author</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">View</th>
                     {{-- <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th> --}}
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-                @foreach ($recipes as $recipe)
+                @foreach ($blogs as $blog)
                     <tr>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {{ $recipe->name }}
-                                @if($recipe->hasInappropriateReview())
+                            {{ $blog->name }}
+                                @if($blog->hasInappropriateReview())
                                     <span title="Inappropriate feedback detected" 
                                     class="ml-2 text-red-600 font-bold text-xl leading-none select-none">!</span>
                                 @endif
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {{ ucfirst($recipe->category) }}
+                            {{ ucfirst($blog->category) }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {{ ucfirst($recipe->difficulty) }}
+                            {{ $blog->Author: ->name ?? 'Unknown' }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {{ $recipe->duration }} min
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {{ $recipe->chef->name ?? 'Unknown' }}
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            <a href="{{ route('recipes.show', $recipe->id) }}" 
+                            <a href="{{ route('blog.show', $blog->id) }}" 
                             class="inline-flex items-center px-3 py-1 bg-orange-600 text-white rounded hover:bg-orange-700 transition">
                                 View
                             </a>
@@ -62,7 +54,7 @@
     </div>
 
     <div class="mt-4">
-        {{ $recipes->links() }}
+        {{ $blog->links() }}
     </div>
 
     @else
