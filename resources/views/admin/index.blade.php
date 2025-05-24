@@ -14,6 +14,7 @@
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Difficulty</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Duration</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Chef</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">View</th>
                     {{-- <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th> --}}
                 </tr>
             </thead>
@@ -22,6 +23,10 @@
                     <tr>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                             {{ $recipe->name }}
+                                @if($recipe->hasInappropriateReview())
+                                    <span title="Inappropriate feedback detected" 
+                                    class="ml-2 text-red-600 font-bold text-xl leading-none select-none">!</span>
+                                @endif
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                             {{ ucfirst($recipe->category) }}
@@ -35,6 +40,13 @@
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                             {{ $recipe->chef->name ?? 'Unknown' }}
                         </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            <a href="{{ route('recipes.show', $recipe->id) }}" 
+                            class="inline-flex items-center px-3 py-1 bg-orange-600 text-white rounded hover:bg-orange-700 transition">
+                                View
+                            </a>
+                        </td>
+
                         {{-- <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 space-x-2">
                             <a href="{{ route('admin.recipes.edit', $recipe->id) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
                             <form action="{{ route('admin.recipes.destroy', $recipe->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Are you sure you want to delete this recipe?');">

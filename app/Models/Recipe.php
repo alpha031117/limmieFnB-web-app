@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
 
+
 class Recipe extends Model
 {
     use HasFactory, LogsActivity;
@@ -33,5 +34,17 @@ class Recipe extends Model
             ->useLogName('recipe')
             ->logOnlyDirty()
             ->setDescriptionForEvent(fn(string $eventName) => "Recipe has been {$eventName}");
+    }
+
+        public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function hasInappropriateReview(): bool
+    {
+        return $this->reviews->contains(function ($review) {
+            return $review->isInappropriate();
+        });
     }
 }

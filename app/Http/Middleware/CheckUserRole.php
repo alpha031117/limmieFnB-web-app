@@ -24,10 +24,6 @@ class CheckUserRole
             return redirect()->route('login');
         }
 
-        // If user role is not in allowed roles, deny access
-        if (!in_array($user->role, $roles)) {
-            abort(403, 'Unauthorized - Insufficient permissions');
-        }
 
         return $next($request);
     }

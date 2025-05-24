@@ -18,7 +18,7 @@ class RecipeController extends Controller
     // Display Recipe Details
     public function show($id)
     {
-        $recipe = Recipe::with('chef')->findOrFail($id);
+        $recipe = Recipe::with(['chef', 'reviews.user'])->findOrFail($id);
         return view('recipes.recipe-detail', compact('recipe'));
     }
 
@@ -173,6 +173,13 @@ class RecipeController extends Controller
         // Redirect back with success message
         return redirect()->route('recipes.my', $user->id)
                         ->with('success', 'Recipe deleted successfully.');
+    }
+
+    public function hasInappropriateReview(): bool
+    {
+        return $this->reviews->contains(function ($review) {
+            return $review->isInappropriate();
+        });
     }
 
 }

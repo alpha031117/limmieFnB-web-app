@@ -4,6 +4,8 @@ use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ReviewController;
+
 
 // Login & Signup Routes
 Route::get('login', [UserController::class,'showLogin'])->name('login');
@@ -17,6 +19,12 @@ Route::middleware(['auth', 'checkrole:user'])->group(function () {
 
     Route::get('/', [RecipeController::class, 'index'])->name('home');
 
+    // Review Routes
+    Route::post('/recipes/{recipe}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+    Route::get('/reviews/{review}/edit', [ReviewController::class, 'edit'])->name('reviews.edit');
+    Route::put('/reviews/{review}', [ReviewController::class, 'update'])->name('reviews.update');
+    Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+
     // Recipe Routes
     Route::get('/recipes', [RecipeController::class, 'index'])->name('recipes.index');  
     Route::get('/recipes/{id}/edit', [RecipeController::class,'edit'])->name('recipes.edit');
@@ -27,6 +35,7 @@ Route::middleware(['auth', 'checkrole:user'])->group(function () {
     Route::get('/recipes/create', [RecipeController::class, 'create'])->name('recipes.create');
     Route::post('/recipes', [RecipeController::class, 'store'])->name('recipes.store');
     Route::get('/recipes/{id}', [RecipeController::class, 'show'])->name('recipes.show');
+
 });
 
 Route::middleware(['auth', 'checkrole:admin'] )->group(function () {
