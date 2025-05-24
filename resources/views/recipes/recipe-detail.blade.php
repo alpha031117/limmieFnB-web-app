@@ -359,28 +359,21 @@
             <button class="w-full border border-gray-300 py-2 rounded hover:bg-gray-100 text-sm font-semibold">View Profile</button>
         </aside>
 
-        {{-- Newsletter --}}
+        {{-- Feedback --}}
         <aside class="md:col-span-2 border border-gray-200 rounded p-4">
-            <h3 class="font-semibold text-lg mb-2">Newsletter</h3>
+            <h3 class="font-semibold text-lg mb-2">Feedback</h3>
             <p class="text-sm text-gray-600 mb-10">
-                Subscribe to get weekly recipe updates and cooking tips.
+                We love to listen to your feedback. Your insights help us improve and provide a better experience for everyone. Please take a moment to share your thoughts with us.
             </p>
-            <form action="#" method="POST" class="flex gap-2">
-                @csrf
-                <input
-                    type="email"
-                    name="email"
-                    placeholder="Your email"
-                    class="flex-1 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                    required
-                />
-                <button
-                    type="submit"
-                    class="bg-orange-600 text-white px-6 py-2 rounded hover:bg-orange-700 transition"
-                >
-                    Subscribe
+            <a href="https://forms.gle/HeVgzHnZq9WZURN49" target="_blank" rel="noopener noreferrer">
+                <button class="px-4 py-2 rounded bg-orange-500 text-white hover:bg-orange-600 flex items-center space-x-2">
+                  <!-- Feedback Icon (Chat Bubble) -->
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 8h10M7 12h6m-9 8v-1a4 4 0 014-4h8a4 4 0 014 4v1" />
+                  </svg>
+                  <span>Fill SUS Questionnaire</span>
                 </button>
-            </form>
+              </a>                          
         </aside>
     </div>
 </div>
