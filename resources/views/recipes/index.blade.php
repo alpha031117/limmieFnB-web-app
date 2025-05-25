@@ -172,11 +172,18 @@
                         </svg>
                         <span>{{ $recipe->duration }} min</span>
                     </div>
+                        @php
+                            $averageRating = $recipe->reviews->avg('rating') ?? 0;
+                            $roundedRating = round($averageRating);
+                            $ratingCount = $recipe->reviews->count();   
+                        @endphp
                     <div class="flex items-center space-x-1 text-yellow-500 text-xs">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.97a1 1 0 00.95.69h4.18c.969 0 1.371 1.24.588 1.81l-3.388 2.46a1 1 0 00-.364 1.118l1.286 3.97c.3.921-.755 1.688-1.54 1.118l-3.388-2.46a1 1 0 00-1.176 0l-3.388 2.46c-.784.57-1.838-.197-1.539-1.118l1.285-3.97a1 1 0 00-.364-1.118L2.045 9.397c-.783-.57-.38-1.81.588-1.81h4.18a1 1 0 00.951-.69l1.285-3.97z" />
-                        </svg>
-                        <span>{{ $recipe->rating }}</span>
+                            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10 15l-5.878 3.09L5.416 11.18 1 7.545l6.09-.538L10 1l2.91 6.007 6.09.538-4.416 3.635 1.293 6.91z"/>
+                            </svg>
+                            <span>{{ number_format($averageRating, 1) }}</span>
+                                {{-- Number of ratings --}}
+                            <span class="text-gray-500 text-sm">({{ $ratingCount }} {{ Str::plural('rating', $ratingCount) }})</span>
                     </div>
                 </div>
             
@@ -194,7 +201,7 @@
                 No recipes found
             </div>
         @endif
-    </div>
+    </div>          
     
 </div>
 
