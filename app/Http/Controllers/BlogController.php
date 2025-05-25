@@ -96,7 +96,7 @@ public function index()
         }
 
         $blog = Blog::findOrFail($blogID);
-        return view('blog.blog-edit', compact('blog'));
+        return view('blog.edit-blog', compact('blog'));
 
 
     }

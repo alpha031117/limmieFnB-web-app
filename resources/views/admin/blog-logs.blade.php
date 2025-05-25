@@ -51,7 +51,7 @@
                             @endif
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            @if($log->subject) {{-- Ensure subject (recipe) still exists --}}
+                            @if($log->subject) {{-- Ensure subject (blog) still exists --}}
                             <button 
                                 @click="isOpen = true"
                                 class="bg-yellow-500 hover:bg-yellow-600 text-white text-xs px-3 py-1 rounded transition cursor-pointer"
@@ -95,7 +95,7 @@
                                         Cancel
                                     </button>
 
-                                    <form action="{{ route('admin.recipes.undo', $log->subject_id) }}" method="POST" class="inline">
+                                    <form action="{{ route('admin.blog.undo', $log->subject_id) }}" method="POST" class="inline">
                                         @csrf
                                         <button type="submit" class="px-4 py-2 rounded bg-yellow-600 text-white hover:bg-yellow-700 font-semibold">
                                             Undo

@@ -59,7 +59,7 @@
         <!-- Submit Button -->
         <div>
             <button type="submit" class="bg-orange-600 text-white px-6 py-3 rounded font-semibold hover:bg-orange-700 transition">
-                Add Recipe
+                Add Blog
             </button>
         </div>
     </form>

@@ -10,14 +10,14 @@
         </div>
     @endif
 
-    <form action="{{ route('blog.update', $Blogs->id) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+    <form action="{{ route('blog.update', $blog->id) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
         @csrf
         @method('PUT')
 
         <!-- Blog Name -->
         <div>
             <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Blog Name</label>
-            <input type="text" name="name" id="name" value="{{ old('name', $Blogs->name) }}" required
+            <input type="text" name="name" id="name" value="{{ old('name', $blog->name) }}" required
                 class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400" />
             @error('name')
                 <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
@@ -30,8 +30,8 @@
             <select name="category" id="category" required
                 class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400 hover:bg-gray-50">
                 <option value="" disabled>Select a category</option>
-                @foreach(['dessert', 'lunch', 'dinner', 'vegetarian', 'vegan', 'gluten-free'] as $cat)
-                    <option value="{{ $cat }}" {{ old('category', $recipe->category) === $cat ? 'selected' : '' }}>{{ ucfirst($cat) }}</option>
+                @foreach(['Recipes', 'Cuisine Types', 'Diets & Lifestyles', 'Cooking Techniques', 'Tips & Tricks', 'Travel & Food'] as $cat)
+                    <option value="{{ $cat }}" {{ old('category', $blog->category) === $cat ? 'selected' : '' }}>{{ ucfirst($cat) }}</option>
                 @endforeach
             </select>
             @error('category')
@@ -43,7 +43,7 @@
         <div>
             <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
             <textarea name="description" id="description" rows="4" required
-                class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400">{{ old('description', $recipe->description) }}</textarea>
+                class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400">{{ old('description', $blog->description) }}</textarea>
             @error('description')
                 <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
             @enderror
@@ -65,7 +65,7 @@
 
         <div>
             <button type="submit" class="bg-orange-600 text-white px-6 py-3 rounded font-semibold hover:bg-orange-700 transition">
-                Update Recipe
+                Update Blog
             </button>
         </div>
     </form>
