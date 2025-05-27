@@ -1,6 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
+<div
+    x-data="{ show: {{ session()->has('error') || session()->has('success') ? 'true' : 'false' }} }"
+    x-show="show"
+    x-transition
+    @click="show = false"
+    x-init="setTimeout(() => show = false, 4000)"
+    class="fixed top-4 right-4 max-w-xs w-full z-50 cursor-pointer rounded shadow-lg p-4
+        {{ session('error') ? 'bg-red-500 text-white' : '' }}
+        {{ session('success') ? 'bg-green-500 text-white' : '' }}"
+>
+    {{ session('error') ?? session('success') }}
+</div>
+
 <div class="container mx-auto px-4 py-8" x-data="deleteModal()">
     <h1 class="text-3xl font-bold mb-6 text-orange-600">My Recipes</h1>
 
