@@ -60,7 +60,7 @@ Route::middleware(['auth', 'checkrole:admin'] )->group(function () {
     Route::post('/blogs/{id}/reject', [BlogController::class, 'reject'])->name('blog.reject');
     Route::get('/admin', [AdminBlogController::class,'index'])->name('admin.index');
     Route::get('/admin/recipe-logs', [AdminController::class, 'recipe_logs'])->name('admin.recipe.log');
-    Route::post('/admin/recipes/{recipe}/undo', [AdminBlogController::class, 'undoLastChange'])->name('admin.recipes.undo');
+    Route::post('/admin/recipes/{recipe}/undo', [AdminController::class, 'undoLastChange'])->name('admin.recipes.undo');
     Route::patch('/admin/blogs/{blog}/approval', [AdminBlogController::class, 'updateApproval'])->name('admin.blogs.updateApproval');
 
 });
