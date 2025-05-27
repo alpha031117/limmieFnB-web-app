@@ -63,7 +63,8 @@
         <div>
             <label for="ingredients" class="block text-sm font-medium text-gray-700 mb-1">Ingredients</label>
             <textarea name="ingredients" id="ingredients" rows="4" required
-                class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400">{{ old('ingredients') }}</textarea>
+                class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                placeholder="eg. Onions, Flour, Salt, eg...">{{ old('ingredients') }}</textarea>
             @error('ingredients')
                 <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
             @enderror
@@ -113,8 +114,17 @@
         <!-- Instruction -->
         <div>
             <label for="instruction" class="block text-sm font-medium text-gray-700 mb-1">Instruction</label>
-            <textarea name="instruction" id="instruction" rows="4" required
-                class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400">{{ old('instruction') }}</textarea>
+            <textarea
+            name="instruction"
+            id="instruction"
+            rows="4"
+            required
+            class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400"
+            placeholder="1. Soak rice for 5 minutes.
+2. Rinse and dry the rice.
+3. ..."
+          >{{ old('instruction') }}</textarea>
+          
             @error('instruction')
                 <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
             @enderror
@@ -134,7 +144,7 @@
         <div>
             <label for="image" class="block text-sm font-medium text-gray-700 mb-1">Upload Image</label>
             <input type="file" name="image" id="image" accept="image/*"
-                class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400" />
+                class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400" required/>
             @error('image')
                 <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
             @enderror
