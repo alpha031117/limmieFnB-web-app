@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('recipe_id')->constrained()->onDelete('cascade');
+            $table->foreignId('blog_id')->nullable()->constrained()->onDelete('cascade');
             $table->tinyInteger('rating');
             $table->text('comment');
             $table->timestamps();

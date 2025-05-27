@@ -17,10 +17,13 @@ return new class extends Migration
             $table->text('description');
             // Foreign key column for the chef (user)
             $table->unsignedBigInteger('author_id');
+            $table->string('category')->nullable();
 
             // Set up foreign key constraint
             $table->foreign('author_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('image_url');
+            $table->integer('rating')->default(0);
+            $table->boolean('is_approved')->default(false);
             $table->timestamps();
         });
     }    

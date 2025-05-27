@@ -9,11 +9,11 @@ use App\Models\Blog;
 
 class AdminBlogController extends Controller
 {
-public function index()
-{
-    $blogs = Blog::paginate(10); // Fix: use paginate()
-    return view('admin.index', compact('blogs'));
-}
+    public function index()
+    {
+        $blogs = Blog::paginate(10); // Fix: use paginate()
+        return view('admin.index', compact('blogs'));
+    }
 
     public function blog_logs(Request $request)
     {
@@ -66,19 +66,18 @@ public function index()
 
         return redirect()->back()->with('success', 'Recipe changes undone successfully.');
     }
-public function updateApproval(Request $request, Blog $blog)
-{
-    $request->validate([
-        'approved' => 'required|boolean',
-    ]);
 
-    $blog->is_approved = $request->approved;
-    $blog->save();
+    public function updateApproval(Request $request, Blog $blog)
+    {
+        $request->validate([
+            'approved' => 'required|boolean',
+        ]);
 
-    $status = $request->approved ? 'approved' : 'disapproved';
+        $blog->is_approved = $request->approved;
+        $blog->save();
 
-    return redirect()->back()->with('success', "Blog post has been {$status}.");
-}
+        $status = $request->approved ? 'approved' : 'disapproved';
 
-    
+        return redirect()->back()->with('success', "Blog post has been {$status}.");
+    }
 }
