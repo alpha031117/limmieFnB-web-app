@@ -56,7 +56,7 @@
                             <a href="{{ url('/recipes') }}" class="hover:text-orange-600 {{ request()->is('recipes*') ? 'text-orange-600 font-semibold' : '' }}">Recipes</a>
                         </li>
                         <li>
-                            <a href="{{ url('/about') }}" class="hover:text-orange-600 {{ request()->is('about*') ? 'text-orange-600 font-semibold' : '' }}">About</a>
+                            <a href="{{ route('profile.show') }}" class="hover:text-orange-600 {{ request()->is('profile') ? 'text-orange-600 font-semibold' : '' }}">About</a>
                         </li>
                     @endif
                     

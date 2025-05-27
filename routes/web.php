@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\AdminBlogController;
+use App\Http\Controllers\profileController;
 
 // Login & Signup Routes
 Route::get('login', [UserController::class,'showLogin'])->name('login');
@@ -19,6 +20,10 @@ Route::post('logout', [UserController::class, 'logout'])->name('logout');
 Route::middleware(['auth', 'checkrole:user'])->group(function () {
 
     Route::get('/', [RecipeController::class, 'index'])->name('home');
+    Route::get('/profile', [profileController::class, 'show'])->name('profile.show');
+   Route::put('/profile/update', [profileController::class, 'update'])->name('profile.update');
+   Route::get('/profileEditForm', [profileController::class, 'editForm'])->name('EditForm');
+   
 
     // Review Routes
     Route::post('/recipes/{recipe}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
