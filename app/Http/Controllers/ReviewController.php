@@ -3,33 +3,36 @@
 namespace App\Http\Controllers;
 
 use App\Models\Review;
-use App\Models\Blog;
+// use App\Models\Blog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ReviewController extends Controller
 {
     // Store new review
-    public function store(Request $request, Blog $Blog)
+    public function store(Request $request)
     {
         $userId = auth()->id();
 
-        // Check if review already exists for this user and recipe
-        $existingReview = $Blog->reviews()->where('user_id', $userId)->first();
 
-        if ($existingReview) {
-            return back()->with('error', 'You have already submitted a review for this blog.');
-        }
+        // Check if review already exists for this user and recipe
+        // $existingReview = $Blog->reviews()->where('user_id', $userId)->first();
+
+        // if ($existingReview) {
+        //     return back()->with('error', 'You have already submitted a review for this blog.');
+        // }
 
         $request->validate([
             'rating' => 'required|integer|min:1|max:5',
             'comment' => 'required|string|max:1000',
+            'recipe_id' => 'required|exists:recipes,id', // Assuming recipe_id is the foreign key in reviews table
         ]);
 
-        $Blog->reviews()->create([
+        Review::create([
             'user_id' => Auth::id(),
             'rating' => $request->rating,
             'comment' => $request->comment,
+            'recipe_id' => $request->recipe_id, // Assuming $review is the recipe model
         ]);
 
         return back()->with('success', 'Review submitted successfully.');

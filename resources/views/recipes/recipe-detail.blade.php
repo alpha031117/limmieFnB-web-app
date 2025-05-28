@@ -174,31 +174,34 @@
     @auth
     @if(auth()->user()->role !== 'admin')
     <div class="bg-white border border-gray-200 rounded-lg p-6 mb-6 mt-7">
-        <form action="{{ route('reviews.store', $recipe->id) }}" method="POST">
+        <form action="{{ route('reviews.store') }}" method="POST">
             @csrf
+            <input type="hidden" name="recipe_id" value="{{ $recipe->id }}">
             <h3 class="text-lg font-semibold mb-3">Write a Review</h3>
+
             <div x-data="{ rating: 0, hover: 0 }" class="flex items-center space-x-1 mb-3 select-none" role="radiogroup" aria-label="Rating">
-            @for ($i = 1; $i <= 5; $i++)
-                <label
-                class="cursor-pointer text-3xl"
-                :class="(hover >= {{ $i }} || (!hover && rating >= {{ $i }})) ? 'text-yellow-400' : 'text-gray-300'"
-                @mouseenter="hover = {{ $i }}"
-                @mouseleave="hover = 0"
-                >
-                <input
-                    type="radio"
-                    name="rating"
-                    value="{{ $i }}"
-                    class="hidden"
-                    x-model="rating"
-                    aria-checked="false"
-                    :aria-checked="rating == {{ $i }} ? 'true' : 'false'"
-                    role="radio"
-                />
-                ★
-                </label>
-            @endfor
-            <span class="text-sm text-gray-500 ml-3" x-text="rating ? `You rated ${rating} star${rating > 1 ? 's' : ''}` : 'Select a rating'"></span>
+                @for ($i = 1; $i <= 5; $i++)
+                    <label
+                        class="cursor-pointer text-3xl"
+                        :class="(hover >= {{ $i }} || (!hover && rating >= {{ $i }})) ? 'text-yellow-400' : 'text-gray-300'"
+                        @mouseenter="hover = {{ $i }}"
+                        @mouseleave="hover = 0"
+                    >
+                        <input
+                            type="radio"
+                            name="rating"
+                            value="{{ $i }}"
+                            class="hidden"
+                            x-model="rating"
+                            aria-checked="false"
+                            :aria-checked="rating == {{ $i }} ? 'true' : 'false'"
+                            role="radio"
+                            required
+                        />
+                        ★
+                    </label>
+                @endfor
+                <span class="text-sm text-gray-500 ml-3" x-text="rating ? `You rated ${rating} star${rating > 1 ? 's' : ''}` : 'Select a rating'"></span>
             </div>
 
             <textarea
@@ -217,13 +220,13 @@
             </button>
         </form>
     </div>
-        @else
-            <!-- Message for admins -->
-            <div class="mt-7">
-                
-            </div>
-        @endif
+    @else
+        <div class="mt-7">
+            <!-- Admins cannot submit reviews -->
+        </div>
+    @endif
     @endauth
+
 
     <!-- Display Reviews -->
     @foreach ($recipe->reviews ?? [] as $review)
