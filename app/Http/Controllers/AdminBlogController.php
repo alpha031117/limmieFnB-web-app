@@ -80,4 +80,11 @@ class AdminBlogController extends Controller
 
         return redirect()->back()->with('success', "Blog post has been {$status}.");
     }
+
+    public function hasInappropriateComment(): bool
+    {
+        return $this->comments->contains(function ($comment) {
+            return $comment ->isInappropriate();
+        });
+    }
 }

@@ -1,23 +1,24 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Review extends Model
+class Comment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'recipe_id', 'blogID,','rating', 'comment'];
+    protected $fillable = ['user_id', 'blog_id', 'content'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function recipe()
+    public function blog()
     {
-        return $this->belongsTo(Recipe::class);
+        return $this->belongsTo(Blog::class);
     }
 
     public function isInappropriate(): bool
@@ -25,13 +26,10 @@ class Review extends Model
         $badWords = ['shit', 'fuck', 'offensive', 'curse']; // add your list here
 
         foreach ($badWords as $word) {
-            if (stripos($this->comment, $word) !== false) {
+            if (stripos($this->content, $word) !== false) {
                 return true;
             }
         }
         return false;
     }
-
 }
-
-

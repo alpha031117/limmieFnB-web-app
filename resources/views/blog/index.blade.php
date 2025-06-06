@@ -146,13 +146,6 @@
                 <!-- Blog Title -->
                 <h3 class="font-bold text-lg mb-2">{{ $blog->name }}</h3>
 
-                <!-- Optional Rating -->
-                <div class="flex items-center space-x-1 text-yellow-500 text-xs mb-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M10 15l-5.878 3.09 1.122-6.545L.488 6.91l6.561-.955L10 0l2.951 5.955 6.561.955-4.756 4.635 1.122 6.545z" />
-                    </svg>
-                </div>
-
                 <!-- Action Buttons -->
                 <div class="flex justify-between items-center mt-2">
                     <a href="{{ route('blog.edit', $blog->id) }}">
