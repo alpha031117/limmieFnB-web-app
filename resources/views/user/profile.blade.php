@@ -18,7 +18,7 @@
     @endif
 
 
-    <div class="bg-white rounded-lg shadow p-6 max-w-2xl mx-auto">
+    <div class="bg-white rounded-lg shadow p-6 max-w-2xl">
         <div class="flex items-center space-x-6">
             <!-- Avatar -->
             <div class="flex-shrink-0">

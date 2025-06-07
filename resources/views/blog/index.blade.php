@@ -46,7 +46,7 @@
         <input 
             type="search" 
             id="searchInput" 
-            placeholder="Search recipes..." 
+            placeholder="Search blogs..." 
             onkeyup="filterBlog()"
             class="border rounded px-4 py-2 w-full md:w-1/3 border-gray-300 focus:border-gray-600 focus:outline-none" 
         />

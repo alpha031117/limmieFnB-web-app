@@ -50,16 +50,15 @@
                         </li>
                     @else
                         <li>
+                            <a href="{{ url('/') }}" class="hover:text-orange-600 {{ request()->is('/') ? 'text-orange-600 font-semibold' : '' }}">Home</a>
+                        </li>
+                        <li>
                             <a href="{{ url('/blog') }}" class="hover:text-orange-600 {{ request()->is('blog*') ? 'text-orange-600 font-semibold' : '' }}">Blog</a>
                         </li>
                         <li>
                             <a href="{{ url('/recipes') }}" class="hover:text-orange-600 {{ request()->is('recipes*') ? 'text-orange-600 font-semibold' : '' }}">Recipes</a>
                         </li>
-                        <li>
-                            <a href="{{ route('profile.show') }}" class="hover:text-orange-600 {{ request()->is('profile') ? 'text-orange-600 font-semibold' : '' }}">About</a>
-                        </li>
                     @endif
-                    
                 @endauth
                 @guest
                     <li>
@@ -105,6 +104,9 @@
                                         My Recipes
                                     </a>
                                 @endif
+                                <a href="{{ route('profile.show') }}" class="flex items-center px-4 py-2 text-gray-700 hover:bg-orange-100 hover:text-orange-600">
+                                    My Profile
+                                </a>
                             @endauth
                 
                             <form method="POST" action="{{ route('logout') }}">
