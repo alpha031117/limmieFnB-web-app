@@ -25,7 +25,7 @@ class RecipeSeeder extends Seeder
             'ingredients' => 'Fettuccine pasta, Butter, Garlic, Heavy cream, Parmesan cheese, Salt, Pepper, Parsley, Red pepper flakes',
             'nutrition' => '550 calories, 30g fat, 40g carbohydrates, 15g protein',
             'servings' => '4',
-            'chef_id' => 1, // Assuming you have a user with ID 1
+            'chef_id' => 2, // Assuming you have a user with ID 1
             'image_url' => 'recipes/creamy_garlic_parmesan_pasta.jpg',
             'created_at' => now(),
             'updated_at' => now(),

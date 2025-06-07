@@ -30,7 +30,7 @@ class RecipeFactory extends Factory
             ]),
             'servings' => $this->faker->numberBetween(1, 8),
             'chef_id' => \App\Models\User::factory(),
-            'image_url' => 'recipes/' . $this->faker->image('storage/app/public/recipes', 640, 480, null, false),
+            // 'image_url' => 'recipes/' . $this->faker->image('storage/app/public/recipes', 640, 480, null, false),
         ];
     }
 }
