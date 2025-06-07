@@ -20,7 +20,7 @@ Route::post('logout', [UserController::class, 'logout'])->name('logout');
 // Blog Routes
 Route::middleware(['auth', 'checkrole:user'])->group(function () {
 
-    Route::get('/', [RecipeController::class, 'index'])->name('home');
+    Route::get('/', [UserController::class, 'showHome'])->name('home');
     Route::get('/profile', [profileController::class, 'show'])->name('profile.show');
     Route::put('/profile/update', [profileController::class, 'update'])->name('profile.update');
     Route::get('/profileEditForm', [profileController::class, 'editForm'])->name('EditForm');

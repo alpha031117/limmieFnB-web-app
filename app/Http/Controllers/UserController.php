@@ -87,4 +87,9 @@ class UserController extends Controller
         }
     }
     
+    // Show Home Page
+    public function showHome()
+    {
+        return view('index');
+    }
 }
