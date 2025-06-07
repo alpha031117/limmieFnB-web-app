@@ -61,7 +61,7 @@ class ReviewController extends Controller
             'comment' => $request->comment,
         ]);
 
-        return redirect()->route('recipes.show', $review->blogID)->with('success', 'Review updated successfully.');
+        return redirect()->route('recipes.show', $review->recipe_id)->with('success', 'Review updated successfully.');
     }
 
     // Delete the review
@@ -71,7 +71,7 @@ class ReviewController extends Controller
 
         $review->delete();
 
-        return redirect()->route('blog.show', $review->blogID)->with('success', 'Review deleted successfully.');
+        return redirect()->route('recipes.destroy', $review->recipe_id)->with('success', 'Review deleted successfully.');
     }
 
     // Authorization helper: only review author or admin can edit/delete

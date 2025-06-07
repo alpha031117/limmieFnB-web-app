@@ -22,7 +22,7 @@
                     <tr>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                             {{ $blog->name }}
-                            @if($blog->hasInappropriateReview())
+                            @if($blog->hasInappropriateComment())
                                 <span title="Inappropriate feedback detected" 
                                 class="ml-2 text-red-600 font-bold text-xl leading-none select-none">!</span>
                             @endif

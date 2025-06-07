@@ -8,6 +8,7 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\AdminBlogController;
 use App\Http\Controllers\profileController;
+use App\Http\Controllers\CommentController;
 
 // Login & Signup Routes
 Route::get('login', [UserController::class,'showLogin'])->name('login');
@@ -21,15 +22,20 @@ Route::middleware(['auth', 'checkrole:user'])->group(function () {
 
     Route::get('/', [RecipeController::class, 'index'])->name('home');
     Route::get('/profile', [profileController::class, 'show'])->name('profile.show');
-   Route::put('/profile/update', [profileController::class, 'update'])->name('profile.update');
-   Route::get('/profileEditForm', [profileController::class, 'editForm'])->name('EditForm');
-   
+    Route::put('/profile/update', [profileController::class, 'update'])->name('profile.update');
+    Route::get('/profileEditForm', [profileController::class, 'editForm'])->name('EditForm');
 
     // Review Routes
     Route::post('/recipes//reviews', [ReviewController::class, 'store'])->name('reviews.store');
     Route::get('/reviews/{review}/edit', [ReviewController::class, 'edit'])->name('reviews.edit');
     Route::put('/reviews/{review}', [ReviewController::class, 'update'])->name('reviews.update');
     Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+
+    // Comment Routes
+    Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+    Route::get('/comments/{comment}/edit', [CommentController::class, 'edit'])->name('comments.edit');
+    Route::put('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
+    Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 
     // Recipe Routes
     Route::get('/recipes', [RecipeController::class, 'index'])->name('recipes.index');  

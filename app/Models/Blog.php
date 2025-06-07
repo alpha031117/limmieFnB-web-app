@@ -13,7 +13,7 @@ class Blog extends Model
     use HasFactory, LogsActivity;
 
     protected $fillable = [
-        'name', 'description', 'author_name', 'image_url'
+        'name', 'description', 'author_name', 'image_url', 'author_id'
     ];
 
     public function author()
@@ -32,15 +32,19 @@ class Blog extends Model
             ->setDescriptionForEvent(fn(string $eventName) => "Blog Post has been {$eventName}");
     }
 
-        public function reviews()
+    public function comments()
     {
-        return $this->hasMany(Review::class);
+        return $this->hasMany(Comment::class);
     }
 
-    public function hasInappropriateReview(): bool
+
+    public function hasInappropriateComment(): bool
     {
-        return $this->reviews->contains(function ($review) {
-            return $review->isInappropriate();
-        });
+        foreach ($this->comments as $comment) {
+            if ($comment->isInappropriate()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

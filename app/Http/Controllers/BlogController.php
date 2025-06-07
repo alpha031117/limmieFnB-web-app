@@ -27,7 +27,7 @@ public function index()
     // Display Recipe Details
     public function show($id)
     {
-        $blog = Blog::with(['author', 'reviews.user'])->findOrFail($id);
+        $blog = Blog::with(['author', 'comments'])->findOrFail($id);
         return view('blog.blog-detail', compact('blog'));
     }
 
@@ -67,9 +67,6 @@ public function index()
         $blogs->description = $validatedData['description'];
         $blogs->author_id = $user->id;
         $blogs->image_url = $imagePath ? '/storage/' . $imagePath : null;
-        
-        // Default rating (optional, you can adjust or add a rating input)
-        $blogs->rating = 0;
     
         $blogs->save();
     
@@ -195,11 +192,10 @@ public function reject($id)
 }
 
 
-    public function hasInappropriateReview(): bool
+    public function hasInappropriateComment(): bool
     {
-        return $this->reviews->contains(function ($review) {
-            return $review->isInappropriate();
+        return $this->comments->contains(function ($comment) {
+            return $comment ->isInappropriate();
         });
     }
-
 }

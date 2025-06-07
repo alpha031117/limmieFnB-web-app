@@ -40,21 +40,8 @@
             <span>Total: {{ $blog->duration }} min</span>
         </div>
     @php
-        $averageRating = $blog->reviews->avg('rating') ?? 0;
-        $roundedRating = round($averageRating);
-        $ratingCount = $blog->reviews->count();   
     @endphp
 
-    <div class="flex items-center gap-1">
-        @for ($i = 1; $i <= 5; $i++)
-            <svg class="w-4 h-4 {{ $i <= $roundedRating ? 'text-yellow-400' : 'text-gray-300' }}" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10 15l-5.878 3.09L5.416 11.18 1 7.545l6.09-.538L10 1l2.91 6.007 6.09.538-4.416 3.635 1.293 6.91z"/>
-            </svg>
-        @endfor
-        <span>{{ number_format($averageRating, 1) }}</span>
-            {{-- Number of ratings --}}
-        <span class="text-gray-500 text-sm">({{ $ratingCount }} {{ Str::plural('rating', $ratingCount) }})</span>
-</div>
 
     </div>
 
@@ -70,40 +57,29 @@
             </svg>
         </div>
     @endif
+    <div 
+        x-data="{ activeTab: 'instructions' }" 
+        class="border border-black dark:border-gray-700 rounded-lg p-4 bg-white dark:black shadow-sm transition"
+    >
+        <div class="mb-3">
+            <h2 class="text-lg font-semibold text-black dark:text-black">Description</h2>
+        </div>
+        
+        <p class="text-sm  text-black dark:text-black leading-relaxed max-w-2xl">
+            {{ $blog->description }}
+        </p>
+    </div>
 
-        <p class="text-sm text-gray-600 mb-4 max-w-xl">
-        {{ $blog->description }}
-    </p>
 
-<!-- Write a Review -->
+<!-- Write a comment -->
 @auth
 @if(auth()->user()->role !== 'admin')
 <div class="bg-white border border-gray-200 rounded-lg p-6 mb-6 mt-7">
-    <form action="{{ route('blog.store', $blog->id) }}" method="POST">
+    <form action="{{ route('comments.store')}}" method="POST">
+        <input type="hidden" name="blog_id" value="{{ $blog->id }}">
         @csrf
-        <h3 class="text-lg font-semibold mb-3">Write a Review</h3>
+        <h3 class="text-lg font-semibold mb-3">Leave a Comment</h3>
         <div x-data="{ rating: 0, hover: 0 }" class="flex items-center space-x-1 mb-3 select-none" role="radiogroup" aria-label="Rating">
-        @for ($i = 1; $i <= 5; $i++)
-            <label
-            class="cursor-pointer text-3xl"
-            :class="(hover >= {{ $i }} || (!hover && rating >= {{ $i }})) ? 'text-yellow-400' : 'text-gray-300'"
-            @mouseenter="hover = {{ $i }}"
-            @mouseleave="hover = 0"
-            >
-            <input
-                type="radio"
-                name="rating"
-                value="{{ $i }}"
-                class="hidden"
-                x-model="rating"
-                aria-checked="false"
-                :aria-checked="rating == {{ $i }} ? 'true' : 'false'"
-                role="radio"
-            />
-            ★
-            </label>
-        @endfor
-        <span class="text-sm text-gray-500 ml-3" x-text="rating ? `You rated ${rating} star${rating > 1 ? 's' : ''}` : 'Select a rating'"></span>
         </div>
         <textarea
             name="comment"
@@ -117,7 +93,7 @@
             type="submit"
             class="mt-4 bg-orange-500 text-white py-2 px-4 rounded hover:bg-orange-600"
         >
-            Submit Review
+            Submit Comment
         </button>
     </form>
 </div>
@@ -129,42 +105,39 @@
     @endif
 @endauth
 
-<!-- Display Reviews -->
-@foreach ($blogs->reviews ?? [] as $review)
+<!-- Display Comment -->
+@foreach ($blog->comments ?? [] as $comment)
 <div class="bg-white border border-gray-200 rounded-lg p-4 mb-4" x-data="{ open: false }">
     <div class="flex items-center gap-3 mb-2">
         <div
             class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500"
         >
-            <span class="text-xs font-semibold uppercase">{{ substr($review->user->name, 0, 1) }}</span>
+            <span class="text-xs font-semibold uppercase">{{ substr($comment->user->name, 0, 1) }}</span>
         </div>
         <div class="flex-1">
             <div class="font-semibold text-sm">
-                {{ $review->user->name }}
-                    @if($review->isInappropriate())
+                {{ $comment->user->name }}
+                    @if($comment->isInappropriate())
                     <span title="This feedback contains inappropriate content" 
                         class="text-red-600 font-bold text-xl select-none">!</span>
                     @endif
             </div>
-            <div class="text-yellow-400">
-                @for ($i = 1; $i <= 5; $i++)
-                    <span class="{{ $i <= $review->rating ? '' : 'text-gray-300' }}">★</span>
-                @endfor
-            </div>
-            <span class="text-xs text-gray-400">{{ $review->created_at->format('F d, Y') }}</span>
+            <span class="text-xs text-gray-400">{{ $comment->created_at->format('F d, Y') }}</span>
         </div>
-        @if(auth()->id() === $review->user_id)
+        @if(auth()->id() === $comment->user_id)
         <button
             @click="open = true"
             type="button"
             class="text-blue-600 hover:bg-blue-100 hover:text-blue-800 text-sm font-medium px-3 py-1 rounded transition duration-200"
         >
-            Edit
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 inline">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+            </svg>
         </button>
         @endif
-        @if(auth()->id() === $review->user_id || auth()->user()->role === 'admin')
+        @if(auth()->id() === $comment->user_id || auth()->user()->role === 'admin')
             <form
-                action="{{ route('reviews.destroy', $review->id) }}"
+                action="{{ route('comments.destroy', $comment->id) }}"
                 method="POST"
                 onsubmit="return confirm('Are you sure you want to delete this review?');"
                 class="inline"
@@ -175,12 +148,15 @@
                     type="submit"
                     class="text-red-600 hover:bg-red-100 hover:text-red-800 text-sm font-medium px-3 py-1 rounded transition duration-200"
                 >
-                    Delete
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                    </svg>
+
                 </button>
             </form>
         @endif
     </div>
-    <p class="text-sm text-gray-700">{{ $review->comment }}</p>
+    <p class="text-sm text-gray-700">{{ $comment->content }}</p>
 
     <!-- Modal -->
     <div
@@ -194,18 +170,9 @@
                 Edit Your Review
             </h3>
 
-            <form action="{{ route('reviews.update', $review->id) }}" method="POST">
+            <form action="{{ route('comments.update', $comment->id) }}" method="POST">
                 @csrf
                 @method('PUT')
-
-                <label class="block mb-2 font-semibold">Rating</label>
-                <select name="rating" class="border border-gray-300 rounded p-2 mb-4 w-full">
-                    @for ($i = 1; $i <= 5; $i++)
-                        <option value="{{ $i }}" {{ $review->rating == $i ? 'selected' : '' }}>
-                            {{ $i }} Star{{ $i > 1 ? 's' : '' }}
-                        </option>
-                    @endfor
-                </select>
 
                 <label class="block mb-2 font-semibold">Comment</label>
                 <textarea
@@ -213,7 +180,7 @@
                     rows="5"
                     class="w-full border border-gray-300 rounded p-3 mb-4"
                     required
-                >{{ old('comment', $review->comment) }}</textarea>
+                >{{ old('content', $comment->content) }}</textarea> 
 
                 <div class="flex justify-end gap-3">
                     <button
@@ -227,7 +194,7 @@
                         type="submit"
                         class="bg-orange-600 text-white px-6 py-2 rounded hover:bg-orange-700"
                     >
-                        Update Review
+                        Update Comment
                     </button>
                 </div>
             </form>
